@@ -1,8 +1,8 @@
 #!/bin/bash
 #Global variables
 NAME=$1
-MASTERS=$2
-SLAVES=$3
+NUM_MASTERS=$2
+NUM_SLAVES=$3
 MASTER_INSTALL_SCRIPT="master_install.sh"
 SLAVE_INSTALL_SCRIPT="slave_install.sh"
 LOGPATH=/tmp/$NAME-`date +%Y%m%d-%H%M%S`
@@ -20,8 +20,6 @@ MACHINE_TYPE="n1-standard-4"
 NETWORK="mesos-$NAME"
 ZONE="europe-west1-d"
 
-
-
 create_instance() {
   gcloud compute instances create $1 \
   --boot-disk-size $BOOT_DISK_SIZE \
@@ -36,15 +34,25 @@ create_instance() {
 }
  
 create_network() {
-  gcloud compute networks create $1 \
-  --format $FORMAT \
-  --description "network for $NAME"  > $LOGPATH/network.json
+  if [ -z `gcloud compute networks list --regexp $1 --uri` ]
+  then 
+    echo "Creating network ..."
+    gcloud compute networks create $1 \
+    --format $FORMAT \
+    --description "network for $NAME"  > $LOGPATH/network.json
+  else
+    echo "Network already exists."
+  fi
 }
 
-create_firewall_rules() {
-  gcloud compute firewall-rules create $NETWORK-ssh -q --network $1 --allow tcp:22 --format $FORMAT > $LOGPATH/firewall.json
-  gcloud compute firewall-rules create $NETWORK-http -q --network $1 --allow tcp:80 --format $FORMAT >> $LOGPATH/firewall.json
-  gcloud compute firewall-rules create $NETWORK-https -q --network $1 --allow tcp:443 --format $FORMAT >> $LOGPATH/firewall.json
+create_firewall_rule() {
+  if [ -z `gcloud compute firewall-rules list $1-$2 --uri` ]
+  then
+    echo "Creating firewall rules ..."
+    gcloud compute firewall-rules create $1-$2 -q --network $1 --allow tcp:$2 --format $FORMAT >> $LOGPATH/firewall.json
+  else
+    echo "Not creating rule $1-$2 because it already exists."
+  fi
 }
 
 config_zookeeper() {
@@ -86,25 +94,22 @@ put_zk_master_ids() {
 
 # check if a cluster with the same name already exists
 
-
 # create the log directory
 mkdir $LOGPATH
 
-#instance groups
-
 # create the network
-if [ -z `gcloud compute networks list --regexp $NETWORK --uri` ]
-  then 
-    echo "Creating network ..."
-    create_network $NETWORK
-    echo "Creating firewall rules ..."
-    create_firewall_rules $NETWORK $PORTS
-  else 
-    echo "Network already exists."
-fi
+create_network $NETWORK
+
+#create the firewall rules
+create_firewall_rule $NETWORK 22
+create_firewall_rule $NETWORK 80
+create_firewall_rule $NETWORK 443
+
+#create the config for zookeeper
+config_zookeeper
 
 # create the masters
-for ((i=1;i<=$MASTERS;i++));
+for ((i=1;i<=$NUM_MASTERS;i++));
 do
   masternames+="$NAME-master-$i "
 done
@@ -114,7 +119,7 @@ create_instance "$masternames" $MASTER_INSTALL_SCRIPT $MASTERLOG
 
 
 # create the slaves
-for ((i=1;i<=SLAVES;i++));
+for ((i=1;i<=NUM_SLAVES;i++));
 do
   slavenames+="$NAME-slave-$i "
 done
@@ -122,8 +127,7 @@ echo "Going to create the following slave nodes:"
 echo $slavenames
 create_instance "$slavenames" $SLAVE_INSTALL_SCRIPT $SLAVELOG
 
-#zookeeper
-config_zookeeper
+
 
 
 
@@ -137,3 +141,5 @@ config_zookeeper
 #haproxy
 # --scopes ?
 # --tags
+
+# remove the whole cluster, rules, network

@@ -1,5 +1,6 @@
 resource "google_compute_instance" "mesos-master" {
-    name = "mesos-master"
+    count = "${var.mastercount}"
+    name = "mesos-master${count.index}"
     machine_type = "n1-standard-4"
     zone = "${var.zone}"
     tags = ["mesos-master","http","https","ssh"]
@@ -12,17 +13,16 @@ resource "google_compute_instance" "mesos-master" {
     network_interface {
       network = "${google_compute_network.mesos-net.name}"
       access_config {
-        //Ephemeral IP
+        nat_ip = "${element(google_compute_address.master-address.*.address, count.index)}"
       }
     }
     
-    provisioner "remote-exec" {
-      script = "../../scripts/master_install.sh"
-        connection {
-            user = "${var.gce_ssh_user}"
-            key_file = "${var.gce_ssh_private_key_file}"
-        }
-    }
-    
-
+#    provisioner "remote-exec" {
+#      scripts = ["../../scripts/master_install.sh", "../../scripts/docker_install.sh" ]
+#      connection {
+#        user = "${var.gce_ssh_user}"
+#        key_file = "${var.gce_ssh_private_key_file}"
+#      }
+#    }
 }
+

@@ -14,14 +14,15 @@ terraform notes
 
 Things to take care of:
 
-- logging into created vm with ssh (using https://www.terraform.io/docs/provisioners/connection.html)
+- <strike>logging into created vm with ssh (using https://www.terraform.io/docs/provisioners/connection.html)</strike>
 - install software
-    - see ../scripts/master_install.sh and slave_install.sh
-    - install mesosphere on master nodes
-    - install mesos on slave nodes
+    - <strike>see ../scripts/master_install.sh and slave_install.sh</strike>
+    - <strike>install mesosphere on master nodes</strike>
+    - <strike>install mesos on slave nodes</strike>
     - install haproxy on all nodes (or mesos-dns?)
-    - install docker on all nodes
+    - <strike>install docker on all nodes</strike>
 - gather ip's of masters for zookeeper configuration
+
 - configure zookeeper
     - set id of master in ```/etc/zookeeper/conf/myid``` (unique for every master node)
     - set ip and id of masters in ```/etc/zookeeper/zoo.cfg``` on every master node

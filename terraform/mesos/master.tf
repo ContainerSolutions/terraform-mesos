@@ -10,7 +10,7 @@ resource "google_compute_instance" "mesos-master" {
     }
     
     network_interface {
-      network = "mesos-net"
+      network = "${google_compute_network.mesos-net.name}"
       access_config {
         //Ephemeral IP
       }
@@ -18,10 +18,11 @@ resource "google_compute_instance" "mesos-master" {
     
     provisioner "remote-exec" {
       script = "../../scripts/master_install.sh"
+        connection {
+            user = "${var.gce_ssh_user}"
+            key_file = "${var.gce_ssh_private_key_file}"
+        }
     }
     
-    connection {
-        user = "${var.gce_ssh_user}"
-        key_file = "${var.gce_ssh_private_key_file}"
-    }
+
 }

@@ -20,6 +20,7 @@ Things to take care of:
     - install mesosphere on master nodes
     - install mesos on slave nodes
     - install haproxy on all nodes (or mesos-dns?)
+    - install docker on all nodes
 - gather ip's of masters for zookeeper configuration
 - configure zookeeper
     - set id of master in ```/etc/zookeeper/conf/myid``` (unique for every master node)

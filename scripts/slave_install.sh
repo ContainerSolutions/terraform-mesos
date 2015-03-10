@@ -13,3 +13,5 @@ sudo apt-get -y update
 
 #Install mesos
 sudo apt-get -y install mesos haproxy
+
+# TODO: Add --master=file:/etc/zookeeper to master

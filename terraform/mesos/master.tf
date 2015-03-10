@@ -16,13 +16,22 @@ resource "google_compute_instance" "mesos-master" {
         nat_ip = "${element(google_compute_address.master-address.*.address, count.index)}"
       }
     }
-    
-#    provisioner "remote-exec" {
-#      scripts = ["../../scripts/master_install.sh", "../../scripts/docker_install.sh" ]
-#      connection {
-#        user = "${var.gce_ssh_user}"
-#        key_file = "${var.gce_ssh_private_key_file}"
-#      }
-#    }
+
+    provisioner "remote-exec" {
+      scripts = ["../../scripts/master_install.sh", "../../scripts/docker_install.sh" ]
+      connection {
+        user = "${var.gce_ssh_user}"
+        key_file = "${var.gce_ssh_private_key_file}"
+      }
+    }
+
+    provisioner "remote-exec" {
+      inline = "echo zk://${join(":2181,", google_compute_address.zookeeper-address.*.address)} > /etc/zookeeper"
+      connection {
+        user = "${var.gce_ssh_user}"
+        key_file = "${var.gce_ssh_private_key_file}"
+      }
+    }
+
 }
 

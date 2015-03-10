@@ -1,5 +1,10 @@
 terraform notes
 
+$ terraform plan -out=mesos.plan
+$ terraform show mesos.plan
+$ terraform graph mesos.plan | xdot
+$ terraform apply mesos.plan
+
 - why does a resource have a name in the title, and an attribute?
 
 ```resource "google_compute_network" "mesos-net" {

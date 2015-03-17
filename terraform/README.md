@@ -24,7 +24,7 @@ Things to take care of:
 - gather ip's of masters for zookeeper configuration
 
 - configure zookeeper
-    - set id of master in ```/etc/zookeeper/conf/myid``` (unique for every master node)
+    - ~~set id of master in ```/etc/zookeeper/conf/myid``` (unique for every master node)~~
     - set ip and id of masters in ```/etc/zookeeper/zoo.cfg``` on every master node
 - configure mesos on master and slave nodes
     - set url to all master nodes in ```/etc/mesos/zk``` 

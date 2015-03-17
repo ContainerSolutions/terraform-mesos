@@ -1,5 +1,5 @@
 resource "google_compute_firewall" "mesos-http" {
-    name = "mesos-http"
+    name = "${var.name}-mesos-http"
     network = "${google_compute_network.mesos-net.name}"
 
     allow {
@@ -11,7 +11,7 @@ resource "google_compute_firewall" "mesos-http" {
     source_ranges = ["0.0.0.0/0"]
 }
 resource "google_compute_firewall" "mesos-https" {
-    name = "mesos-https"
+    name = "${var.name}-mesos-https"
     network = "${google_compute_network.mesos-net.name}"
 
     allow {
@@ -23,7 +23,7 @@ resource "google_compute_firewall" "mesos-https" {
     source_ranges = ["0.0.0.0/0"]
 }
 resource "google_compute_firewall" "mesos-ssh" {
-    name = "mesos-ssh"
+    name = "${var.name}-mesos-ssh"
     network = "${google_compute_network.mesos-net.name}"
 
     allow {

@@ -13,6 +13,7 @@ terraform notes
 - network creation takes too long so node creation fails on first apply run.
 
 Things to take care of:
+(taken from <https://www.digitalocean.com/community/tutorials/how-to-configure-a-production-ready-mesosphere-cluster-on-ubuntu-14-04>)
 
 - <strike>logging into created vm with ssh (using https://www.terraform.io/docs/provisioners/connection.html)</strike>
 - install software

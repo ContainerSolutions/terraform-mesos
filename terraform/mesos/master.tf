@@ -36,7 +36,7 @@ resource "google_compute_instance" "mesos-master" {
 
     #set myid
     provisioner "remote-exec" {
-      inline = "sudo sh -c 'echo ${count.index} /etc/zookeeper/conf/myid'"
+      inline = "sudo sh -c 'echo `expr ${count.index} + 1` > /etc/zookeeper/conf/myid'"
     }
     
     

@@ -1,4 +1,3 @@
-resource "google_compute_address" "master-address" {
-    count = "${var.masters}"
-    name = "${var.name}-master-address-${count.index}"
+resource "google_compute_address" "external-address" {
+    name = "${var.name}-address"
 }

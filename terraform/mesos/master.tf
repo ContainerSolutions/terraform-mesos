@@ -1,7 +1,7 @@
 resource "google_compute_instance" "mesos-master" {
     count = "${var.masters}"
     name = "${var.name}-mesos-master-${count.index}"
-    machine_type = "n1-standard-4"
+    machine_type = "n1-standard-2"
     zone = "${var.zone}"
     tags = ["mesos-master","http","https","ssh"]
     
@@ -10,11 +10,18 @@ resource "google_compute_instance" "mesos-master" {
       type = "pd-ssd"
     }
     
+    metadata {
+      mastercount = "${var.masters}"
+      clustername = "${var.name}"
+      //zk = "zk://${join(":2181,", google_compute_instance.mesos-master.*.name)}:2181/mesos"
+      myid = "${count.index}"
+    }
+    
     # network interface
     network_interface {
       network = "${google_compute_network.mesos-net.name}"
       access_config {
-        nat_ip = "${element(google_compute_address.master-address.*.address, count.index)}"
+        // nat_ip = "${element(google_compute_address.master-address.*.address, count.index)}"
       }
     }
     
@@ -26,20 +33,7 @@ resource "google_compute_instance" "mesos-master" {
     
     # install mesos, haproxy and docker
     provisioner "remote-exec" {
-      scripts = ["../../scripts/master_install.sh", "../../scripts/docker_install.sh" ]
+      scripts = ["../../scripts/master_install.sh", "../../scripts/docker_install.sh", "../../scripts/master_config.sh" ]
     }
-    
-    # set zk string
-    provisioner "remote-exec" {
-      inline = "sudo sh -c 'echo zk://${join(":2181,", google_compute_instance.mesos-master.*.name)}:2181/mesos > /etc/mesos/zk'"
-    }
-
-    #set myid
-    provisioner "remote-exec" {
-      inline = "sudo sh -c 'echo `expr ${count.index} + 1` > /etc/zookeeper/conf/myid'"
-    }
-    
-    
-
 }
 

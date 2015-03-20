@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "getting metadata"
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
 MYID=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/myid"`
@@ -9,28 +10,15 @@ MYID=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/compute
 #### ZOOKEEPER stuff
 
 # populate zoo.cfg
-for ((i=1;i<=MASTERCOUNT;i++));
+echo "writing /etc/zookeeper/conf/zoo.cfg"
+for ((i=1;i<=MASTERCOUNT;i++))
 do
-  sudo sh -c "echo server.${i}=${CLUSTERNAME}-mesos-master-((${i}-1)):2888:3888 >> /etc/zookeeper/conf/zoo.cfg"
+  echo "adding server ${i}"
+  sudo sh -c "echo server.${i}=${CLUSTERNAME}-mesos-master-$((${i}-1)):2888:3888 >> /etc/zookeeper/conf/zoo.cfg"
 done
-
-# set zk connection string
-# initialize
-ZK="zk://"
-# loop
-for ((i=0;i<MASTERCOUNT;i++));
-do
-  # add a master to the string
-  ZK+="${CLUSTERNAME}-mesos-master-${i}:2181,"
-done
-# strip trailing comma
-ZK=${ZK::-1}
-# add path
-ZK+="/mesos"
-#put it in the file
-sudo sh -c "echo ${ZK} > /etc/mesos/zk"
 
 # set myid
+echo "setting myid"
 sudo sh -c "echo ${MYID} > /etc/zookeeper/conf/myid"
 
 ### MESOS stuff
@@ -40,14 +28,16 @@ sudo sh -c "echo ${MYID} > /etc/zookeeper/conf/myid"
 QUORUM=$((${MASTERCOUNT}/2+1))
 # write the quorum to the file
 sudo sh -c "echo ${QUORUM} > /etc/mesos-master/quorum"
-
 #host name
 HOSTNAME=`cat /etc/hostname`
-sudo sh -c "echo ${HOSTNAME} > /etc/mesos-master/hostname"
-
-#host ip
 IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
+
+sudo sh -c "echo ${IP} > /etc/mesos-master/hostname"
+# host ip
 sudo sh -c "echo ${IP} > /etc/mesos-master/ip"
+# cluster name
+sudo sh -c "echo ${CLUSTERNAME} > /etc/mesos-master/cluster"
+
 
 #### MARATHON stuff
 # create the config dir
@@ -59,7 +49,10 @@ sudo cp /etc/mesos/zk /etc/marathon/conf/master
 # and again
 sudo cp /etc/mesos/zk /etc/marathon/conf
 # replace mesos with marathon
-sudo sed -i -e 's/mesos/marathon/' /etc/marathon/conf/zk
+sudo sed -i -e 's/\/mesos/\/marathon/' /etc/marathon/conf/zk
+# enable the artifact store
+sudo mkdir -p /etc/marathon/store
+sudo sh -c "echo 'file:///etc/marathon/store' > /etc/marathon/conf/artifact_store"
 
 ##### service stuff
 # stop mesos slave process, if running

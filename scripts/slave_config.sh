@@ -3,20 +3,24 @@
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
 
-#### ZOOKEEPER stuff
+# stop services if running
+sudo stop zookeeper
+sudo stop mesos-master
 
-# populate zoo.cfg
-for ((i=1;i<=MASTERCOUNT;i++));
-do
-  sudo sh -c "echo server.${i}=${CLUSTERNAME}-mesos-master-((${i}-1)):2888:3888 >> /etc/zookeeper/conf/zoo.cfg"
-done
+# disable services
+sudo sh -c "echo manual > /etc/init/zookeeper.override"
+sudo sh -c "echo manual > /etc/init/mesos-master.override"
 
-# set zk connection string
-ZK="zk://"
-for ((i=0;i<MASTERCOUNT;i++));
-do
-  ZK+="${CLUSTERNAME}-mesos-master-${i}:2181,"
-done
-ZK+="/mesos"
-sudo sh -c "echo ${ZK} > /etc/mesos/zk"
+# set hostname
+HOSTNAME=`cat /etc/hostname`
+IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
 
+sudo sh -c "echo ${IP} > /etc/mesos-slave/hostname"
+# set ip address
+sudo sh -c "echo ${IP} > /etc/mesos-slave/ip"
+
+# set containerizers
+sudo sh -c "echo 'docker,mesos' > /etc/mesos-slave/containerizers"
+
+# start the slave process
+sudo start mesos-slave

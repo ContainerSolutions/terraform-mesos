@@ -33,7 +33,12 @@ resource "google_compute_instance" "mesos-master" {
     
     # install mesos, haproxy and docker
     provisioner "remote-exec" {
-      scripts = ["../../scripts/master_install.sh", "../../scripts/docker_install.sh", "../../scripts/master_config.sh" ]
+      scripts = [
+        "../../scripts/master_install.sh",
+        "../../scripts/docker_install.sh",
+        "../../scripts/common_config.sh",
+        "../../scripts/master_config.sh"
+      ]
     }
 }
 

@@ -1,7 +1,7 @@
 resource "google_compute_instance" "mesos-slave" {
     count = "${var.slaves}"
     name = "${var.name}-mesos-slave-${count.index}"
-    machine_type = "n1-standard-2"
+    machine_type = "n1-standard-4"
     zone = "${var.zone}"
     tags = ["mesos-slave","http","https","ssh"]
 
@@ -30,6 +30,11 @@ resource "google_compute_instance" "mesos-slave" {
 
     # install mesos, haproxy and docker
     provisioner "remote-exec" {
-      scripts = ["../../scripts/slave_install.sh", "../../scripts/docker_install.sh", "../../scripts/slave_config.sh" ]
+      scripts = [
+        "../../scripts/slave_install.sh",
+        "../../scripts/docker_install.sh",
+        "../../scripts/common_config.sh",
+        "../../scripts/slave_config.sh"
+      ]
     }
 }

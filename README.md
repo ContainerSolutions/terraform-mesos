@@ -71,27 +71,26 @@ resource "google_compute_network" "mesos-net" {
     - ~~see ../scripts/master_install.sh and slave_install.sh~~
     - ~~install mesosphere on master nodes~~
     - ~~install mesos on slave nodes~~
-    - install haproxy on all nodes (or mesos-dns?)
+    - ~~install haproxy on all nodes~~ (or mesos-dns?)
     - ~~install docker on all nodes~~
 
 - configure zookeeper
     - ~~set id of master in `/etc/zookeeper/conf/myid` (unique for every master node)~~
-    - set ip and id of masters in `/etc/zookeeper/zoo.cfg` on every master node (make sure the files are updated when masters change)
+    - ~~set ip and id of masters in `/etc/zookeeper/zoo.cfg` on every master node~~ (make sure the files are updated when masters change)
 
 - configure mesos on master and slave nodes
-    - set url to all master nodes in `/etc/mesos/zk`
-    on every master and slave node (```zk://master-ip:2181,master-ip:2181,master-ip:2181/mesos```)
+    - ~~set url to all master nodes in `/etc/mesos/zk` on every master and slave node (```zk://master-ip:2181,master-ip:2181,master-ip:2181/mesos```)~~
     - ~~set quorum in ```/etc/mesos-master/quorum``` on every master node~~
-    - set host ip on every master node, in ```/etc/mesos-master/ip``` and ```/etc/mesos-master/hostname```
+    - ~~set host ip on every master node, in ```/etc/mesos-master/ip``` and ```/etc/mesos-master/hostname```~~
 
-- configure marathon on master nodes
-    - ```sudo mkdir -p /etc/marathon/conf```
+- ~~configure marathon on master nodes~~
+    - ~~```sudo mkdir -p /etc/marathon/conf```
     - ```sudo cp /etc/mesos-master/hostname /etc/marathon/conf```
     - ```sudo cp /etc/mesos/zk /etc/marathon/conf/master```
     - ```sudo cp /etc/marathon/conf/master /etc/marathon/conf/zk```
     - ```sudo sed -i -e 's/mesos/marathon/' /etc/marathon/conf/zk```
 
-- restart services
+- ~~restart services~~
     - on the master nodes
         - ```sudo stop mesos-slave```
         - ```echo manual | sudo tee /etc/init/mesos-slave.override```
@@ -108,7 +107,7 @@ resource "google_compute_network" "mesos-net" {
         - ```sudo start mesos-slave```
 
 - parameterize
-    - set name for cluster, to be used in network name, firewall rules names and hostnames
-    - allow for configuration of number of masters, slaves
+    - ~~set name for cluster, to be used in network name, firewall rules names and hostnames~~
+    - ~~allow for configuration of number of masters, slaves~~
     
   

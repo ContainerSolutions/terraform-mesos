@@ -15,12 +15,22 @@ do
 done
 
 # set zk connection string
+# initialize
 ZK="zk://"
+# loop
 for ((i=0;i<MASTERCOUNT;i++));
 do
+  # add a master to the string
   ZK+="${CLUSTERNAME}-mesos-master-${i}:2181,"
 done
+<<<<<<< Updated upstream
+=======
+# strip trailing comma
+ZK=${ZK::-1}
+# add path
+>>>>>>> Stashed changes
 ZK+="/mesos"
+#put it in the file
 sudo sh -c "echo ${ZK} > /etc/mesos/zk"
 
 # set myid
@@ -29,11 +39,27 @@ sudo sh -c "echo ${MYID} > /etc/zookeeper/conf/myid"
 ### MESOS stuff
 
 #quorum
+# qourum is number of masters divided by 2, + 1)
 QUORUM=$((${MASTERCOUNT}/2+1))
+# write the quorum to the file
 sudo sh -c "echo ${QUORUM} > /etc/mesos-master/quorum"
 
-#host ip
-
 #host name
+HOSTNAME=`cat /etc/hostname`
+sudo sh -c "echo ${HOSTNAME} > /etc/mesos-master/hostname"
+
+#host ip
+IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
+sudo sh -c "echo ${IP} > /etc/mesos-master/ip"
 
 #### MARATHON stuff
+# create the config dir
+sudo mkdir -p /etc/marathon/conf
+# copy the hostname file from mesos
+sudo cp /etc/mesos-master/hostname /etc/marathon/conf
+# copy zk file from mesos
+sudo cp /etc/mesos/zk /etc/marathon/conf/master
+# and again
+sudo cp /etc/mesos/zk /etc/marathon/conf
+# replace mesos with marathon
+sudo sed -i -e 's/mesos/marathon/' /etc/marathon/conf/zk

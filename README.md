@@ -81,7 +81,7 @@ resource "google_compute_network" "mesos-net" {
 - configure mesos on master and slave nodes
     - set url to all master nodes in `/etc/mesos/zk`
     on every master and slave node (```zk://master-ip:2181,master-ip:2181,master-ip:2181/mesos```)
-    - set quorum in ```/etc/mesos-master/quorum``` on every master node
+    - ~~set quorum in ```/etc/mesos-master/quorum``` on every master node~~
     - set host ip on every master node, in ```/etc/mesos-master/ip``` and ```/etc/mesos-master/hostname```
 
 - configure marathon on master nodes

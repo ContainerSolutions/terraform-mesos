@@ -23,12 +23,9 @@ do
   # add a master to the string
   ZK+="${CLUSTERNAME}-mesos-master-${i}:2181,"
 done
-<<<<<<< Updated upstream
-=======
 # strip trailing comma
 ZK=${ZK::-1}
 # add path
->>>>>>> Stashed changes
 ZK+="/mesos"
 #put it in the file
 sudo sh -c "echo ${ZK} > /etc/mesos/zk"
@@ -63,3 +60,18 @@ sudo cp /etc/mesos/zk /etc/marathon/conf/master
 sudo cp /etc/mesos/zk /etc/marathon/conf
 # replace mesos with marathon
 sudo sed -i -e 's/mesos/marathon/' /etc/marathon/conf/zk
+
+##### service stuff
+# stop mesos slave process, if running
+sudo stop mesos-slave
+# disable automatic start of mesos slave
+sudo sh -c "echo manual > /etc/init/mesos-slave.override"
+
+# restart zookeeper
+sudo restart zookeeper
+
+# start mesos master
+sudo start mesos-master
+
+# start marathon
+sudo start marathon

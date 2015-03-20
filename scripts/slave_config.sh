@@ -2,9 +2,6 @@
 
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
-MYID=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/myid"`
-# until terraform supports math functions, we need to do this here
-((MYID+=1))
 
 #### ZOOKEEPER stuff
 
@@ -23,17 +20,3 @@ done
 ZK+="/mesos"
 sudo sh -c "echo ${ZK} > /etc/mesos/zk"
 
-# set myid
-sudo sh -c "echo ${MYID} > /etc/zookeeper/conf/myid"
-
-### MESOS stuff
-
-#quorum
-QUORUM=$((${MASTERCOUNT}/2+1))
-sudo sh -c "echo ${QUORUM} > /etc/mesos-master/quorum"
-
-#host ip
-
-#host name
-
-#### MARATHON stuff

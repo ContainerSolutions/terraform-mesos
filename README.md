@@ -84,27 +84,27 @@ resource "google_compute_network" "mesos-net" {
     - ~~set host ip on every master node, in ```/etc/mesos-master/ip``` and ```/etc/mesos-master/hostname```~~
 
 - ~~configure marathon on master nodes~~
-    - ~~```sudo mkdir -p /etc/marathon/conf```
-    - ```sudo cp /etc/mesos-master/hostname /etc/marathon/conf```
-    - ```sudo cp /etc/mesos/zk /etc/marathon/conf/master```
-    - ```sudo cp /etc/marathon/conf/master /etc/marathon/conf/zk```
-    - ```sudo sed -i -e 's/mesos/marathon/' /etc/marathon/conf/zk```
+    - ~~```sudo mkdir -p /etc/marathon/conf```~~
+    - ~~```sudo cp /etc/mesos-master/hostname /etc/marathon/conf```~~
+    - ~~```sudo cp /etc/mesos/zk /etc/marathon/conf/master```~~
+    - ~~```sudo cp /etc/marathon/conf/master /etc/marathon/conf/zk```~~
+    - ~~```sudo sed -i -e 's/mesos/marathon/' /etc/marathon/conf/zk```~~
 
 - ~~restart services~~
     - on the master nodes
-        - ```sudo stop mesos-slave```
-        - ```echo manual | sudo tee /etc/init/mesos-slave.override```
-        - ```sudo restart zookeeper```
-        - ```sudo start mesos-master```
-        - ```sudo start marathon```
+        - ~~```sudo stop mesos-slave```~~
+        - ~~```echo manual | sudo tee /etc/init/mesos-slave.override```~~
+        - ~~```sudo restart zookeeper```~~
+        - ~~```sudo start mesos-master```~~
+        - ~~```sudo start marathon```~~
     - on the slave nodes
-        - ```sudo stop zookeeper```
-        - ```echo manual | sudo tee /etc/init/zookeeper.override```
-        - ```echo manual | sudo tee /etc/init/mesos-master.override```
-        - ```sudo stop mesos-master```
-        - ```echo 192.168.2.51 | sudo tee /etc/mesos-slave/ip```
-        - ```sudo cp /etc/mesos-slave/ip /etc/mesos-slave/hostname```
-        - ```sudo start mesos-slave```
+        - ~~```sudo stop zookeeper```~~
+        - ~~```echo manual | sudo tee /etc/init/zookeeper.override```~~
+        - ~~```echo manual | sudo tee /etc/init/mesos-master.override```~~
+        - ~~```sudo stop mesos-master```~~
+        - ~~```echo 192.168.2.51 | sudo tee /etc/mesos-slave/ip```~~
+        - ~~```sudo cp /etc/mesos-slave/ip /etc/mesos-slave/hostname```~~
+        - ~~```sudo start mesos-slave```~~
 
 - parameterize
     - ~~set name for cluster, to be used in network name, firewall rules names and hostnames~~

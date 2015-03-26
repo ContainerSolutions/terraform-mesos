@@ -56,3 +56,16 @@ resource "google_compute_firewall" "mesos-ssh" {
     target_tags = ["ssh"]
     source_ranges = ["0.0.0.0/0"]
 }
+
+resource "google_compute_firewall" "vpn" {
+    name = "${var.name}-vpn"
+    network = "${google_compute_network.mesos-net.name}"
+
+    allow {
+        protocol = "udp"
+        ports = ["1194"]
+    }
+
+    target_tags = ["vpn"]
+    source_ranges = ["0.0.0.0/0"]
+}

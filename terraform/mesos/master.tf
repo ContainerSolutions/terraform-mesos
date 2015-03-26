@@ -3,7 +3,7 @@ resource "google_compute_instance" "mesos-master" {
     name = "${var.name}-mesos-master-${count.index}"
     machine_type = "n1-standard-2"
     zone = "${var.zone}"
-    tags = ["mesos-master","http","https","ssh"]
+    tags = ["mesos-master","http","https","ssh","vpn"]
     
     disk {
       image = "ubuntu-os-cloud/ubuntu-1404-trusty-v20150128"

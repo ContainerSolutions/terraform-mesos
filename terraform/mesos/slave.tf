@@ -1,12 +1,12 @@
 resource "google_compute_instance" "mesos-slave" {
     count = "${var.slaves}"
     name = "${var.name}-mesos-slave-${count.index}"
-    machine_type = "n1-standard-4"
+    machine_type = "${var.slave_machine_type}"
     zone = "${var.zone}"
     tags = ["mesos-slave","http","https","ssh"]
 
     disk {
-      image = "ubuntu-os-cloud/ubuntu-1404-trusty-v20150128"
+      image = "${var.image}"
       type = "pd-ssd"
     }
     

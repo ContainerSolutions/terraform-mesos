@@ -31,10 +31,10 @@ resource "google_compute_instance" "mesos-slave" {
     # install mesos, haproxy and docker
     provisioner "remote-exec" {
       scripts = [
-        "scripts/slave_install.sh",
-        "scripts/docker_install.sh",
-        "scripts/common_config.sh",
-        "scripts/slave_config.sh"
+        "./scripts/slave_install.sh",
+        "./scripts/docker_install.sh",
+        "./scripts/common_config.sh",
+        "./scripts/slave_config.sh"
       ]
     }
 }

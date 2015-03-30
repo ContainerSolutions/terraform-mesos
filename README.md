@@ -33,6 +33,7 @@ Create a file `mesos.tf` containing something like this:
         slaves                      = "5"
         network                     = "10.20.30.0/24"
         localaddress                = "92.111.228.8/32"
+        domain                      = "example.com"
     }
 
 See the `variables.tf` file for the available variables and their defaults

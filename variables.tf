@@ -31,6 +31,8 @@ variable "network" {
 }
 # private address for unlimited access to the cluster, in CIDR
 variable "localaddress" {}
+# domain name used by haproxy
+variable "domain" {}
 
 ## mesos stuff
 # the name of the cluster

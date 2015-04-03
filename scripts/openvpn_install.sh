@@ -1,17 +1,40 @@
 #!/bin/bash
-sudo apt-get -y install openvpn easy-rsa
-sudo cp -r /usr/share/easy-rsa /etc/openvpn/
+HOSTNAME=`hostname`
 
-cd /etc/openvpn/easy-rsa
+#only install if hostame ends with 0 (only do this for the first master in the cluster)
+if [ ${HOSTNAME: -1} -eq 0 ]
+then
+  sudo apt-get -y install openvpn easy-rsa
+  sudo cp -r /usr/share/easy-rsa /etc/openvpn/
 
-#create ca
-sudo ./pkitool --initca
+  cd /etc/openvpn/easy-rsa
 
-#create server cert
-sudo ./pkitool --server $SERVERNAME
+  # set the default environment variables
+  source vars
 
-#create diffie-hellman parameters
-sudo ./build-dh
+  # set environment variables
+  export KEY_COUNTRY="NL"
+  export KEY_PROVINCE="NH"
+  export KEY_CITY="Amsterdam"
+  export KEY_ORG="Container Solutions"
+  export KEY_EMAIL="sysadmin@container-solutions.com"
+  export KEY_CN=MesosVPN
+  export KEY_NAME=MesosVPN
+  export KEY_OU=MesosVPN
 
-# create client cert
-sudo ./pkitool client1
+  # start with an empty keys dir
+  sudo ./clean-all
+
+  #create ca
+  sudo ./pkitool --initca
+
+  #create server cert
+  sudo ./pkitool --server $SERVERNAME
+
+  #create diffie-hellman parameters
+  sudo ./build-dh
+
+  # create client cert
+  sudo ./pkitool client1
+
+fi

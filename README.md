@@ -5,7 +5,7 @@
 ### Install Terraform
 Follow the instructions on <https://www.terraform.io/intro/getting-started/install.html> to set up Terraform on your machine.
 
-### Get your Google Cloud JSON Key (Currently only Google Cloud provider is supported)
+### Get your Google Cloud JSON Key
 - Visit https://console.developers.google.com
 - Navigate to APIs & Auth -> Credentials -> Service Account -> Generate new JSON key
 - The file will be downloaded to your machine
@@ -44,26 +44,36 @@ Download the module
 
 ### Create Terraform plan
 
-- Create the plan and save it to a file
+Create the plan and save it to a file. Use module-depth 1 to show the configuration of the resources inside the module.
 
 ```
-terraform plan -out my.plan
+terraform plan -out my.plan -module-depth=1
 ```
 
 ### Create the cluster
+
+Once you are satisfied with the plan, apply it.
 
 ```
 terraform apply my.plan
 ```
 
-### Destroy the cluster
+### Visit the web interfaces
+When the cluster is set up, check the Google Developers Console for the addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
+- Go to <http://ipaddress:5050> for the Mesos Console 
+- and <http://ipaddress:8080> for the Marathon Console
 
+
+### Destroy the cluster
+When you're done, clean up the cluster with
 ```
 terraform destroy
 ```
 
 ## To do
 
+- How do I call a script from a module?
+- Currently no way to retrieve the ip address of the master nodes through Terraform. Use the Google Developers Console to retrieve the ip addresses. 
 - Cannot reach the log files of the Mesos slave nodes from the web interface on the leading master
 - VPN configuration
 

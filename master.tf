@@ -15,6 +15,7 @@ resource "google_compute_instance" "mesos-master" {
       mastercount = "${var.masters}"
       clustername = "${var.name}"
       myid = "${count.index}"
+      domain = "${var.domain}"
     }
     
     # network interface
@@ -34,11 +35,12 @@ resource "google_compute_instance" "mesos-master" {
     # install mesos, haproxy, docker, openvpn, and configure the node
     provisioner "remote-exec" {
       scripts = [
-        "./scripts/master_install.sh",
-        "./scripts/docker_install.sh",
-        "./scripts/openvpn_install.sh",
-        "./scripts/common_config.sh",
-        "./scripts/master_config.sh"
+        "${path.module}/scripts/master_install.sh",
+        "${path.module}/scripts/docker_install.sh",
+        "${path.module}/scripts/openvpn_install.sh",
+        "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
+        "${path.module}/scripts/common_config.sh",
+        "${path.module}/scripts/master_config.sh"
       ]
     }
 }

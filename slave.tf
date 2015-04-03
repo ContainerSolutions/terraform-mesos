@@ -13,6 +13,7 @@ resource "google_compute_instance" "mesos-slave" {
     metadata {
       mastercount = "${var.masters}"
       clustername = "${var.name}"
+      domain = "${var.domain}"
     }
 
     network_interface {
@@ -31,10 +32,11 @@ resource "google_compute_instance" "mesos-slave" {
     # install mesos, haproxy and docker
     provisioner "remote-exec" {
       scripts = [
-        "./scripts/slave_install.sh",
-        "./scripts/docker_install.sh",
-        "./scripts/common_config.sh",
-        "./scripts/slave_config.sh"
+        "${path.module}/scripts/slave_install.sh",
+        "${path.module}/scripts/docker_install.sh",
+        "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
+        "${path.module}/scripts/common_config.sh",
+        "${path.module}/scripts/slave_config.sh"
       ]
     }
 }

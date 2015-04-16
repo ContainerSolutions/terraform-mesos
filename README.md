@@ -12,7 +12,7 @@ Follow the instructions on <https://www.terraform.io/intro/getting-started/insta
 
 ### Get Google Cloud SDK
 - Visit https://cloud.google.com/sdk/
-- Install the SDK and authenticate it with your Google Account
+- Install the SDK and authenticate it with your Google Account. This will create an ssh keypair called `google_compute_engine`, usually in `~/.ssh/` .
 - Once your keypair is created, use the path to the private key and the username in the next step as `gce_ssh_user` and `gce_ssh_private_key_file`
 
 ### Prepare Terraform configuration file
@@ -73,8 +73,6 @@ terraform destroy
 
 ## To do
 
-- How do I call a script from a module?
-- Currently no way to retrieve the ip address of the master nodes through Terraform. Use the Google Developers Console to retrieve the ip addresses. 
 - Cannot reach the log files of the Mesos slave nodes from the web interface on the leading master
 - VPN configuration
 

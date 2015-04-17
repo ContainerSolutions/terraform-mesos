@@ -39,9 +39,9 @@ resource "google_compute_instance" "mesos-master" {
         "${path.module}/scripts/docker_install.sh",
         "${path.module}/scripts/openvpn_install.sh",
         "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
+        "${path.module}/scripts/mesosdns_install.sh",
         "${path.module}/scripts/common_config.sh",
-        "${path.module}/scripts/master_config.sh",
-        "${path.module}/scripts/mesosdns_install.sh"
+        "${path.module}/scripts/master_config.sh"
       ]
     }
 }

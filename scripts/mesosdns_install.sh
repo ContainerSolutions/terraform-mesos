@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
-CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
+MASTERCOUNT=`curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
+CLUSTERNAME=`curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
 
 MASTERS_JSON+="[\"${CLUSTERNAME}-mesos-master-0:5050\""
 for ((i=1;i<MASTERCOUNT;i++))
@@ -19,7 +19,7 @@ sudo tee /etc/mesos-dns.conf <<JSON
   "ttl": 60,
   "domain": "mesos",
   "port": 53,
-  "resolvers": ["8.8.8.8"],
+  "resolvers": ["169.254.169.254", "10.42.30.01"],
   "timeout": 5,
   "listener": "0.0.0.0",
   "email": "root.mesos-dns.mesos"
@@ -27,3 +27,8 @@ sudo tee /etc/mesos-dns.conf <<JSON
 JSON
 
 sudo docker run -d --restart=always --name mesosdns -p 53:53 -p 53:53/udp -v /etc/mesos-dns.conf:/config.json mwldk/mesos-dns:0.1.1-srvfix mesos-dns -config=/config.json -v=2
+
+echo "supersede domain-name-servers 127.0.0.1;" | sudo tee -a /etc/dhcp/dhclient.conf
+
+sudo /etc/init.d/networking restart
+sudo dhclient

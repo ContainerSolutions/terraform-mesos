@@ -26,7 +26,7 @@ sudo tee /etc/mesos-dns.conf <<JSON
 }
 JSON
 
-sudo docker run -d --restart=always --name mesosdns -p 53:53 -p 53:53/udp -v /etc/mesos-dns.conf:/config.json mwldk/mesos-dns:0.1.1-srvfix mesos-dns -config=/config.json -v=2
+sudo docker run -d --restart=always --name mesosdns -p 53:53 -p 53:53/udp -v /etc/mesos-dns.conf:/config.json mwldk/mesos-dns:0.1.1-srvfix mesos-dns -config=/config.json
 
 echo "supersede domain-name-servers 127.0.0.1;" | sudo tee -a /etc/dhcp/dhclient.conf
 

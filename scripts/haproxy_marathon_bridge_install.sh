@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# get ready
-sudo apt-get install -y golang
-mkdir -p /tmp/bridge
-cd /tmp/bridge
+# get go
+mkdir -p /tmp/go && cd /tmp/go
+curl -O https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
+tar -xf go1.4.2.linux-amd64.tar.gz && sudo mv go /opt/ && sudo mkdir /opt/gopkg
+export GOPATH="/opt/gopkg" 
+export GOROOT="/opt/go"
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+
+# get marathon-haproxy-subdomain-bridge
+mkdir -p /tmp/bridge && cd /tmp/bridge
 git clone https://github.com/ContainerSolutions/marathon-haproxy-subdomain-bridge.git .
 
 # set domain name
@@ -19,4 +25,4 @@ sudo cp refresh-haproxy /usr/local/bin/refresh-haproxy
 sudo cp haproxycron /etc/cron.d/haproxycron
 
 # clean up
-sudo rm -rf /tmp/bridge
+sudo rm -rf /tmp/bridge /tmp/go

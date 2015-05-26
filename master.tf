@@ -35,6 +35,7 @@ resource "google_compute_instance" "mesos-master" {
     # install mesos, haproxy, docker, openvpn, and configure the node
     provisioner "remote-exec" {
       scripts = [
+        "${path.module}/scripts/common_install.sh",
         "${path.module}/scripts/master_install.sh",
         "${path.module}/scripts/docker_install.sh",
         "${path.module}/scripts/openvpn_install.sh",

@@ -34,6 +34,7 @@ Create a file `mesos.tf` containing something like this:
         network                     = "10.20.30.0/24"
         localaddress                = "92.111.228.8/32"
         domain                      = "example.com"
+        image                       = "ubuntu-1404-trusty-v20150316"
     }
 
 See the `variables.tf` file for the available variables and their defaults

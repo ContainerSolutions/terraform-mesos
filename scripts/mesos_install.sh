@@ -29,7 +29,7 @@ sudo apt-get -y update
 # Generate locale
 sudo locale-gen en_US.UTF-8
 
-# Try to install Mesos from package
+# Try to install Mesos from a package
 sudo apt-get -y install mesos=$MESOS_VERSION-1.0.ubuntu1404
 
 if [ $? -eq 0 ]
@@ -38,10 +38,9 @@ if [ $? -eq 0 ]
 	exit 0
 fi
 
-CLUSTER_NAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
-if [ -n "$CLUSTER_NAME" ]
+if [ -z "$PACKER_BUILD" ]
 	then
-	echo "There is no package for Mesos $MESOS_VERSION. Please try to build it from sources into an image. More info: terraform-mesos/images/README.md"
+	echo "There is no package for Mesos $MESOS_VERSION available. Please try to build it from sources into an image. More info: terraform-mesos/images/README.md"
 	exit 1
 fi
 

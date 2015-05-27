@@ -35,6 +35,10 @@ variable "localaddress" {}
 variable "domain" {}
 
 ## mesos stuff
+# mesos version
+variable "mesos_version" {
+	default = "0.22.1"
+}
 # the name of the cluster
 variable "name" {}
 # number of master nodes to install

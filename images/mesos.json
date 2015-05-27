@@ -3,7 +3,8 @@
 		"gce_account_file": "",
 		"gce_project_id": "",
 		"gce_image_name": "",
-		"gce_zone": ""
+		"gce_zone": "",
+		"mesos_version": ""
 	},
 	"builders": [
 		{
@@ -13,13 +14,8 @@
 			"source_image": "ubuntu-1404-trusty-v20150316",
 			"zone": "{{user `gce_zone`}}",
 			"image_name": "{{user `gce_image_name`}}",
-			"image_description": "Ubuntu 14.04 with Apache Mesos installed"
+			"image_description": "Ubuntu 14.04 with Apache Mesos {{user `mesos_version`}} installed"
 		}
-		// ,{
-		//   "type": "docker",
-		//   "image": "ubuntu:14.04",
-		//   "commit": true
-		// }
 	],
 	"provisioners": [
 		{
@@ -44,7 +40,10 @@
 		},
 		{
 			"type": "shell",
-			"script": "./mesos.sh"
+			"environment_vars": [
+				"MESOS_VERSION={{user `mesos_version`}}"
+			],
+			"script": "./../scripts/mesos_install.sh"
 		}
 	]
 }

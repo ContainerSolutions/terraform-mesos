@@ -16,6 +16,7 @@ resource "google_compute_instance" "mesos-master" {
       clustername = "${var.name}"
       myid = "${count.index}"
       domain = "${var.domain}"
+      mesosversion = "${var.mesos_version}"
     }
     
     # network interface
@@ -36,8 +37,8 @@ resource "google_compute_instance" "mesos-master" {
     provisioner "remote-exec" {
       scripts = [
         "${path.module}/scripts/common_install.sh",
+        "${path.module}/scripts/mesos_install.sh",
         "${path.module}/scripts/master_install.sh",
-        "${path.module}/scripts/docker_install.sh",
         "${path.module}/scripts/openvpn_install.sh",
         "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
         "${path.module}/scripts/mesosdns_install.sh",

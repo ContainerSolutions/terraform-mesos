@@ -1,8 +1,12 @@
 # Build VM image with Apache Mesos
 
-Use Packer to build GCE image with a specific Apache Mesos version installed. The GCE image can later be referred in `image` variable passed to the [Terraform module](https://github.com/ContainerSolutions/terraform-mesos). 
+Use [Packer](https://packer.io/) to build GCE image with a specific version of [Apache Mesos](http://mesos.apache.org/) installed. The GCE image can later be referred in `image` variable passed to the [Terraform module](https://github.com/ContainerSolutions/terraform-mesos). 
 
 ## Usage
+
+Install Packer and run the following script in `images` directory of this project, with your values for `GCE_ACCOUNT_FILE`, `GCE_PROJECT_ID` and `GCE_ZONE`. `GCE_IMAGE_NAME` will be the name of your new image. For `MESOS_VERSION` enter either a version number in "0.22.1" format or a valid git commit identifier, branch or tag name from the official Mesos git repository, which is [https://git-wip-us.apache.org/repos/asf/mesos.git](https://git-wip-us.apache.org/repos/asf/mesos.git).
+
+This tool tries to install Mesos from an Ubuntu package, if it exists, or build and install it from sources.
 
 ```
 FILENAME="mesos.json"

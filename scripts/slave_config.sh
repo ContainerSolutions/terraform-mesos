@@ -23,4 +23,4 @@ sudo sh -c "echo ${IP} > /etc/mesos-slave/ip"
 sudo sh -c "echo 'docker,mesos' > /etc/mesos-slave/containerizers"
 
 # start the slave process
-# sudo restart mesos-slave
+sudo start mesos-slave

@@ -1,0 +1,50 @@
+{
+	"variables": {
+		"gce_account_file": "",
+		"gce_project_id": "",
+		"gce_image_name": "",
+		"gce_zone": "",
+		"mesos_version": ""
+	},
+	"builders": [
+		{
+			"type": "googlecompute",
+			"account_file": "{{user `gce_account_file`}}",
+			"project_id": "{{user `gce_project_id`}}",
+			"source_image": "ubuntu-1404-trusty-v20150316",
+			"zone": "{{user `gce_zone`}}",
+			"image_name": "{{user `gce_image_name`}}",
+			"image_description": "Ubuntu 14.04 with Apache Mesos {{user `mesos_version`}} installed"
+		}
+	],
+	"provisioners": [
+		{
+			"type": "file",
+			"source": "./default",
+			"destination": "/etc/default"
+		},
+		{
+			"type": "file",
+			"source": "./mesos-init-wrapper",
+			"destination": "/usr/bin/mesos-init-wrapper"
+		},
+		{
+			"type": "file",
+			"source": "./upstart/master.upstart",
+			"destination": "/etc/init/mesos-master.conf"
+		},
+		{
+			"type": "file",
+			"source": "./upstart/slave.upstart",
+			"destination": "/etc/init/mesos-slave.conf"
+		},
+		{
+			"type": "shell",
+			"environment_vars": [
+				"MESOS_VERSION={{user `mesos_version`}}",
+				"PACKER_BUILD=1"
+			],
+			"script": "./../scripts/mesos_install.sh"
+		}
+	]
+}

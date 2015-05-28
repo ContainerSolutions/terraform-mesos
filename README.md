@@ -19,7 +19,6 @@ Follow the instructions on <https://www.terraform.io/intro/getting-started/insta
 
 Create a file `mesos.tf` containing something like this:
 
-
     module "mesos" {
         source                      = "github.com/ContainerSolutions/terraform-mesos"
         account_file                = "/path/to/your.key.json"
@@ -34,11 +33,36 @@ Create a file `mesos.tf` containing something like this:
         network                     = "10.20.30.0/24"
         localaddress                = "92.111.228.8/32"
         domain                      = "example.com"
+        image                       = "ubuntu-1404-trusty-v20150316"
     }
 
 See the `variables.tf` file for the available variables and their defaults
 
+### Choose Mesos version
+
+Tell the module, implicitly or explicitly, which version of Mesos you want to use, by setting the `image` and optionally `mesos_version` configuration options.
+
+#### Standard Mesos Ubuntu package
+
+If you set `image` to the standard Ubuntu 14.04 GCE image name, you get the standard Mesos version distributed with this operating system.
+
+    image = "ubuntu-1404-trusty-v20150316"
+
+#### Specific Mesos Ubuntu package version
+
+If you decide to use a specific version of Mesos, which does exist as an Ubuntu package, enter the version number to the optional `mesos_version` configuration option.
+
+    image = "ubuntu-1404-trusty-v20150316"
+    mesos_version = "0.22.1"
+
+#### Mesos built from a specific git commit
+
+You might want to try Mesos installed from a specific commit (e.g. "69d4cf654", or "master"). In order to do it, build a GCE virtual machine image (see [images/README.md](images/README.md)) with Mesos installed and use the `GCE_IMAGE_NAME` you give it as the `image` configuration option, e.g.:
+    
+    image = "ubuntu-1404-trusty-mesos"
+
 ### Get the Terraform module
+
 Download the module
 
 ```terraform get```

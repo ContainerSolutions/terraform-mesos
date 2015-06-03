@@ -64,7 +64,7 @@ sudo sh -c "echo manual > /etc/init/mesos-slave.override"
 sudo restart zookeeper
 
 # start mesos master
-sudo start mesos-master
+sudo start mesos-master || sudo restart mesos-master
 
 # start marathon
 sudo start marathon

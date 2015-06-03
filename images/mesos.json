@@ -9,6 +9,7 @@
 	"builders": [
 		{
 			"type": "googlecompute",
+			"machine_type": "n1-standard-2",
 			"account_file": "{{user `gce_account_file`}}",
 			"project_id": "{{user `gce_project_id`}}",
 			"source_image": "ubuntu-1404-trusty-v20150316",
@@ -41,8 +42,7 @@
 		{
 			"type": "shell",
 			"environment_vars": [
-				"MESOS_VERSION={{user `mesos_version`}}",
-				"PACKER_BUILD=1"
+				"MESOS_VERSION={{user `mesos_version`}}"
 			],
 			"script": "./../scripts/mesos_install.sh"
 		}

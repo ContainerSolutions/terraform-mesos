@@ -50,4 +50,9 @@ variable "slaves" {
     default = "3"
 }
 
+## mesos frameworks
+variable "marathon_version" {
+	default = "0.8.1"
+}
+
 

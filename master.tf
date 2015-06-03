@@ -17,6 +17,7 @@ resource "google_compute_instance" "mesos-master" {
       myid = "${count.index}"
       domain = "${var.domain}"
       mesosversion = "${var.mesos_version}"
+      marathonversion = "${var.marathon_version}"
     }
     
     # network interface
@@ -38,6 +39,7 @@ resource "google_compute_instance" "mesos-master" {
       scripts = [
         "${path.module}/scripts/common_install.sh",
         "${path.module}/scripts/mesos_install.sh",
+        "${path.module}/scripts/marathon_install.sh",
         "${path.module}/scripts/master_install.sh",
         "${path.module}/scripts/openvpn_install.sh",
         "${path.module}/scripts/haproxy_marathon_bridge_install.sh",

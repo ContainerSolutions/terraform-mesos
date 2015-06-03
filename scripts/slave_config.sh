@@ -4,7 +4,7 @@ MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
 
 # stop services if running
-sudo stop zookeeper
+# sudo stop zookeeper
 sudo stop mesos-master
 
 # disable services
@@ -23,4 +23,4 @@ sudo sh -c "echo ${IP} > /etc/mesos-slave/ip"
 sudo sh -c "echo 'docker,mesos' > /etc/mesos-slave/containerizers"
 
 # start the slave process
-sudo start mesos-slave
+sudo start mesos-slave || sudo restart mesos-slave

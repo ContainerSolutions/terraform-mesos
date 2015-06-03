@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo apt-get -y install haproxy marathon
+sudo apt-get -y install haproxy # zookeeper zookeeperd zookeeper-bin

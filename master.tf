@@ -5,10 +5,6 @@ resource "google_compute_instance" "mesos-master" {
     zone = "${var.zone}"
     tags = ["mesos-master","http","https","ssh","vpn"]
     
-    # service_account {
-    #   scopes = ["compute-rw"]
-    # }
-    
     disk {
       image = "${var.image}"
       type = "pd-ssd"
@@ -41,7 +37,10 @@ resource "google_compute_instance" "mesos-master" {
     provisioner "remote-exec" {
       scripts = [
         "${path.module}/scripts/common_install.sh",
-        "${path.module}/scripts/master_install.sh"
+        "${path.module}/scripts/master_install.sh",
+        "${path.module}/scripts/openvpn_install.sh",
+        "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
+        "${path.module}/scripts/mesosdns_install.sh"
       ]
     }
 }

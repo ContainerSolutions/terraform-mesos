@@ -41,10 +41,9 @@
 		{
 			"type": "shell",
 			"environment_vars": [
-				"MESOS_VERSION={{user `mesos_version`}}",
-				"PACKER_BUILD=1"
+				"MESOS_VERSION={{user `mesos_version`}}"
 			],
-			"script": "./../scripts/mesos_install.sh"
+			"script": "./mesos_install.sh"
 		}
 	]
 }

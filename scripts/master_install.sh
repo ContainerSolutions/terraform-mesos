@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#sudo apt-get -y install haproxy marathon
+sudo apt-get -y install haproxy marathon
 
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
+MESOSVERSION=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mesosversion"`
 MYID=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/myid"`
 ZK_CLIENT_PORT=2181
 
@@ -34,7 +35,7 @@ QUORUM=$((${MASTERCOUNT}/2+1))
 ZK="zk://"
 for ((i=0;i<MASTERCOUNT;i++))
 do
-  ZK+="${CLUSTERNAME}-mesos-master-${i}:2181,"
+  ZK+="${CLUSTERNAME}-mesos-master-${i}:${ZK_CLIENT_PORT},"
 done
 ZK=${ZK::-1}
 ZK+="/mesos"
@@ -46,4 +47,4 @@ sudo docker run -d \
  -e MESOS_CLUSTER=${CLUSTERNAME} \
  -e MESOS_ZK=${ZK} \
  --net=host \
- mesosphere/mesos-master:0.22.1-1.0.ubuntu1404
+ mesosphere/mesos-master:${MESOSVERSION}

@@ -5,6 +5,7 @@ sudo apt-get -y install haproxy marathon
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
 MESOSVERSION=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mesosversion"`
+MARATHONVERSION=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/marathonversion"`
 MYID=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/myid"`
 ZK_CLIENT_PORT=2181
 
@@ -38,13 +39,22 @@ do
   ZK+="${CLUSTERNAME}-mesos-master-${i}:${ZK_CLIENT_PORT},"
 done
 ZK=${ZK::-1}
-ZK+="/mesos"
+# ZK+="/mesos"
 
 sudo docker run -d \
  -e MESOS_QUORUM=${QUORUM} \
  -e MESOS_WORK_DIR=/var/lib/mesos \
  -e MESOS_LOG_DIR=/var/log \
  -e MESOS_CLUSTER=${CLUSTERNAME} \
- -e MESOS_ZK=${ZK} \
+ -e MESOS_ZK=${ZK}/mesos \
  --net=host \
  mesosphere/mesos-master:${MESOSVERSION}
+
+# Marathon
+
+sudo docker run -d \
+ -p 8080:8080 \
+ -p 5051:5051 \
+ mesosphere/marathon:${MARATHONVERSION} \
+ --master ${ZK}/mesos \
+ --zk ${ZK}/marathon

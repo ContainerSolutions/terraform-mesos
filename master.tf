@@ -17,6 +17,7 @@ resource "google_compute_instance" "mesos-master" {
       myid = "${count.index}"
       domain = "${var.domain}"
       mesosversion = "${var.mesos_version}"
+      marathonversion = "${var.marathon_version}"
     }
     
     # network interface

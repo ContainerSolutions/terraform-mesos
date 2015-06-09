@@ -50,4 +50,8 @@ variable "slaves" {
     default = "3"
 }
 
-
+## marathon
+#  marathon version
+variable "marathon_version" {
+	default = "v0.8.2"
+}

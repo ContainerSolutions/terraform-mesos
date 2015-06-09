@@ -35,8 +35,7 @@ resource "google_compute_instance" "mesos-slave" {
       scripts = [
         "${path.module}/scripts/common_install.sh",
         "${path.module}/scripts/slave_install.sh",
-        "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
-        "${path.module}/scripts/mesosdns_install.sh"
+        "${path.module}/scripts/haproxy_marathon_bridge_install.sh"
       ]
     }
 }

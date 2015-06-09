@@ -33,3 +33,6 @@ sudo docker run -d \
  -v /sys:/sys:ro \
  --net=host \
  mesosphere/mesos-slave:${MESOSVERSION}
+
+# @todo enter mesos-dns IP
+# sudo sed -i '1s/^/nameserver 10.181.64.13\n /' /etc/resolv.conf

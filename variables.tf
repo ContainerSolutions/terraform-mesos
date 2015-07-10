@@ -11,7 +11,7 @@ variable "gce_ssh_private_key_file" {}
 variable "region" {}
 # the google zone where the cluster should be created
 variable "zone" {}
-# the name of the google project
+# the ID of the google project
 variable "project" {}
 # image to use for installation
 variable "image" {

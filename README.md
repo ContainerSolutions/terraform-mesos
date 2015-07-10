@@ -12,8 +12,11 @@ Follow the instructions on <https://www.terraform.io/intro/getting-started/insta
 
 ### Get Google Cloud SDK
 - Visit https://cloud.google.com/sdk/
-- Install the SDK and authenticate it with your Google Account. This will create an ssh keypair called `google_compute_engine`, usually in `~/.ssh/` .
-- Once your keypair is created, use the path to the private key and the username in the next step as `gce_ssh_user` and `gce_ssh_private_key_file`
+- Install the SDK, login and authenticate with your Google Account.
+
+### Add your SSH key to the Project Metadata
+- Back in the Developer Console, go to Compute - Compute Engine - Metadata and click the SSH Keys tab. Add your public SSH key there.
+- Use the path to the private key and the username in the next step as `gce_ssh_user` and `gce_ssh_private_key_file`
 
 ### Prepare Terraform configuration file
 

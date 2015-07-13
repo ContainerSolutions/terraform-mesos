@@ -49,7 +49,7 @@ sudo cp /etc/mesos/zk /etc/marathon/conf/master
 # and again
 sudo cp /etc/mesos/zk /etc/marathon/conf
 # replace mesos with marathon
-sudo sed -i -e 's/\/mesos/\/marathon/' /etc/marathon/conf/zk
+sudo sed -i -e 's|mesos$|marathon|' /etc/marathon/conf/zk
 # enable the artifact store
 sudo mkdir -p /etc/marathon/store
 sudo sh -c "echo 'file:///etc/marathon/store' > /etc/marathon/conf/artifact_store"

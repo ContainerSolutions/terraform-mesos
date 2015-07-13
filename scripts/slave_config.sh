@@ -22,5 +22,8 @@ sudo sh -c "echo ${IP} > /etc/mesos-slave/ip"
 # set containerizers
 sudo sh -c "echo 'docker,mesos' > /etc/mesos-slave/containerizers"
 
+# logging level
+sudo sh -c "echo 'WARNING' > /etc/mesos-slave/logging_level"
+
 # start the slave process
 sudo start mesos-slave

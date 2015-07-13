@@ -37,6 +37,8 @@ sudo sh -c "echo ${IP} > /etc/mesos-master/hostname"
 sudo sh -c "echo ${IP} > /etc/mesos-master/ip"
 # cluster name
 sudo sh -c "echo ${CLUSTERNAME} > /etc/mesos-master/cluster"
+# logging level
+sudo sh -c "echo 'WARNING' > /etc/mesos-master/logging_level"
 
 
 #### MARATHON stuff
@@ -53,6 +55,7 @@ sudo sed -i -e 's|mesos$|marathon|' /etc/marathon/conf/zk
 # enable the artifact store
 sudo mkdir -p /etc/marathon/store
 sudo sh -c "echo 'file:///etc/marathon/store' > /etc/marathon/conf/artifact_store"
+sudo sh -c "echo 'warn' > /etc/marathon/conf/logging_level"
 
 ##### service stuff
 # stop mesos slave process, if running

@@ -18,23 +18,23 @@ then
   export KEY_CITY="Amsterdam"
   export KEY_ORG="Container Solutions"
   export KEY_EMAIL="sysadmin@container-solutions.com"
-  export KEY_CN=MesosVPN
-  export KEY_NAME=MesosVPN
-  export KEY_OU=MesosVPN
+  export KEY_CN="MesosVPN"
+  export KEY_NAME="MesosVPN"
+  export KEY_OU="MesosVPN"
 
   # start with an empty keys dir
-  sudo ./clean-all
+  sudo -E ./clean-all
 
   #create ca
-  sudo ./pkitool --initca
+  sudo -E ./pkitool --initca
 
   #create server cert
-  sudo ./pkitool --server $SERVERNAME
+  sudo -E ./pkitool --server $SERVERNAME
 
   #create diffie-hellman parameters
-  sudo ./build-dh
+  sudo -E ./build-dh
 
   # create client cert
-  sudo ./pkitool client1
+  sudo -E ./pkitool client1
 
 fi

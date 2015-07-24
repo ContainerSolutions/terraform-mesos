@@ -86,6 +86,16 @@ Once you are satisfied with the plan, apply it.
 terraform apply my.plan
 ```
 
+### VPN configuration
+
+Use the following command to get the location of `client.ovpn` file, that was created as part of the cluster provisioning.
+
+```
+terraform output -module mesos openvpn
+```
+
+Download the `client.ovpn` file using e.g. `scp` and use it to establish VPN with the cluster. Once the VPN is up, you can access all machines within the cluster using their private IP addresses.
+
 ### Visit the web interfaces
 When the cluster is set up, check the Google Developers Console for the addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
 - Go to <http://ipaddress:5050> for the Mesos Console 

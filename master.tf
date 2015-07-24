@@ -49,5 +49,5 @@ resource "google_compute_instance" "mesos-master" {
 }
 
 output "openvpn" {
-    value = "${google_compute_instance.mesos-master.0.network_interface.0.access_config.0.nat_ip}:/home/${var.gce_ssh_user}/openvpn/client.ovpn"
+    value = "${var.gce_ssh_user}@${google_compute_instance.mesos-master.0.network_interface.0.access_config.0.nat_ip}:/home/${var.gce_ssh_user}/openvpn/client.ovpn"
 }

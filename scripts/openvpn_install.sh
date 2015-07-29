@@ -16,6 +16,8 @@ then
   sudo sed -i "s/;group nogroup/group nogroup/g" server.conf
   NETWORK=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/network" | cut -f1 -d"/")
   echo "push \"route ${NETWORK} 255.255.255.0\"" | sudo tee -a server.conf > /dev/null
+  echo "tun-mtu 1400" | sudo tee -a server.conf > /dev/null
+  echo "mssfix 1360" | sudo tee -a server.conf > /dev/null
   sudo sed -i "s/;duplicate-cn/duplicate-cn/g" server.conf
   sudo cp -r /usr/share/easy-rsa .
   sudo mkdir -p easy-rsa/keys

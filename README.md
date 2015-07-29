@@ -34,7 +34,6 @@ Create a file `mesos.tf` containing something like this:
         masters                     = "3"
         slaves                      = "5"
         network                     = "10.20.30.0/24"
-        localaddress                = "92.111.228.8/32"
         domain                      = "example.com"
         image                       = "ubuntu-1404-trusty-v20150316"
     }
@@ -87,6 +86,8 @@ terraform apply my.plan
 ```
 
 ### VPN configuration
+
+Ports 80, 443 and 22 are open on all the machines within the cluster. Accessing other ports, e.g. Mesos GUI (port 5050) or Marathon GUI (port 8080) is only possible with VPN connection set up.
 
 Use the following command to get the location of `client.ovpn` file, that was created as part of the cluster provisioning.
 

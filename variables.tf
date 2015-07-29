@@ -29,8 +29,6 @@ variable "slave_machine_type" {
 variable "network" {
     default = "10.20.30.0/24"
 }
-# private address for unlimited access to the cluster, in CIDR
-variable "localaddress" {}
 # domain name used by haproxy
 variable "domain" {}
 

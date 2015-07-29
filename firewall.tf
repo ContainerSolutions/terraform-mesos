@@ -14,7 +14,7 @@ resource "google_compute_firewall" "mesos-internal" {
         protocol = "icmp"
     }
 
-    source_ranges = ["${google_compute_network.mesos-net.ipv4_range}","${var.localaddress}"]
+    source_ranges = ["${google_compute_network.mesos-net.ipv4_range}"]
 
 }
 

@@ -33,6 +33,12 @@ resource "google_compute_instance" "mesos-master" {
       user = "${var.gce_ssh_user}"
       key_file = "${var.gce_ssh_private_key_file}"
     }
+
+    # copy configuration files
+    provisioner "file" {
+        source = "${path.module}/conf/consul.hcl"
+        destination = "/tmp/consul.hcl"
+    }
     
     # install mesos, haproxy, docker, openvpn, and configure the node
     provisioner "remote-exec" {
@@ -41,7 +47,8 @@ resource "google_compute_instance" "mesos-master" {
         "${path.module}/scripts/mesos_install.sh",
         "${path.module}/scripts/master_install.sh",
         "${path.module}/scripts/consul_install.sh",
-        "${path.module}/scripts/openvpn_install.sh",
+        "${path.module}/scripts/vault_install.sh",
+        # "${path.module}/scripts/openvpn_install.sh",
         "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
         "${path.module}/scripts/common_config.sh",
         "${path.module}/scripts/master_config.sh"

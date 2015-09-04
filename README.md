@@ -112,9 +112,6 @@ terraform destroy
 ## To do
 
 - Cannot reach the log files of the Mesos slave nodes from the web interface on the leading master
-- VPN configuration
-
-
 
 The installation and configuration used in this module is based on this excellent howto: <https://www.digitalocean.com/community/tutorials/how-to-configure-a-production-ready-mesosphere-cluster-on-ubuntu-14-04>
 

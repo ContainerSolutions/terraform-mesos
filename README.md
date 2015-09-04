@@ -41,10 +41,6 @@ Create a file `mesos.tf` containing something like this:
 
 See the `variables.tf` file for the available variables and their defaults
 
-### Choose Mesos version
-
-Tell the module, implicitly or explicitly, which version of Mesos you want to use, by setting the `image` and optionally `mesos_version` configuration options.
-
 #### Standard Mesos Ubuntu package
 
 If you set `image` to the standard Ubuntu 14.04 GCE image name, you get the standard Mesos version distributed with this operating system.

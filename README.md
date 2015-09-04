@@ -3,7 +3,9 @@
 ## How to set up a Mesos cluster on the Google Cloud using Terraform
 
 ### Install Terraform
-Follow the instructions on <https://www.terraform.io/intro/getting-started/install.html> to set up Terraform on your machine.
+
+* This module requires Terraform 0.6.2 or greater
+* Follow the instructions on <https://www.terraform.io/intro/getting-started/install.html> to set up Terraform on your machine.
 
 ### Get your Google Cloud JSON Key
 - Visit https://console.developers.google.com

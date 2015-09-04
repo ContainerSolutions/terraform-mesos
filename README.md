@@ -36,6 +36,7 @@ Create a file `mesos.tf` containing something like this:
         network                     = "10.20.30.0/24"
         domain                      = "example.com"
         image                       = "ubuntu-1404-trusty-v20150316"
+        mesos_version               = "0.22.1"
     }
 
 See the `variables.tf` file for the available variables and their defaults

@@ -28,6 +28,7 @@ resource "google_compute_instance" "mesos-slave" {
     connection {
       user = "${var.gce_ssh_user}"
       key_file = "${var.gce_ssh_private_key_file}"
+      agent = "false"
     }
 
     # install mesos, haproxy and docker

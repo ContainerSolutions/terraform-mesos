@@ -16,7 +16,7 @@ ZK_CLIENT_PORT=2181
 
 if [ $MYID -eq 1 ]
 then
-	sudo docker run -d -p ${ZK_CLIENT_PORT}:${ZK_CLIENT_PORT} containersol/zookeeper ${MYID}
+	sudo docker run -d --net=host containersol/zookeeper ${MYID}
 	echo "Zookeeper container started (${MYID})"
 else
 	FIRST_NODE="${CLUSTERNAME}-mesos-master-0"
@@ -25,7 +25,7 @@ else
 		echo "Zookeeper waiting for ${FIRST_NODE} to start up."
 		sleep 1
 	done
-	sudo docker run -d -p ${ZK_CLIENT_PORT}:${ZK_CLIENT_PORT} containersol/zookeeper ${MYID} ${FIRST_NODE}
+	sudo docker run -d --net=host containersol/zookeeper ${MYID} ${FIRST_NODE}
 	echo "Zookeeper container started (${MYID} ${FIRST_NODE})"
 fi
 

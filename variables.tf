@@ -15,7 +15,7 @@ variable "zone" {}
 variable "project" {}
 # image to use for installation
 variable "image" {
-    default = "ubuntu-os-cloud/ubuntu-1404-trusty-v20150128"
+    default = "ubuntu-os-cloud/ubuntu-1504-vivid-v20151120"
 }
 variable "master_machine_type" {
     default = "n1-standard-2"
@@ -35,7 +35,7 @@ variable "domain" {}
 ## mesos stuff
 # mesos version
 variable "mesos_version" {
-	default = "0.22.1"
+	default = "0.26"
 }
 # the name of the cluster
 variable "name" {}

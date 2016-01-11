@@ -26,4 +26,4 @@ sudo sh -c "echo 'docker,mesos' > /etc/mesos-slave/containerizers"
 sudo sh -c "echo 'WARNING' > /etc/mesos-slave/logging_level"
 
 # start the slave process
-sudo start mesos-slave
+sudo systemctl start mesos-slave

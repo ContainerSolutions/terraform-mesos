@@ -51,8 +51,11 @@ then
   # copy server certificates and key
   sudo cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn
 
+  # enable systemd service
+  sudo systemctl enable openvpn@server.service
+
   # start openvpn
-  sudo service openvpn start
+  sudo systemctl start openvpn@server.service
 
   # enable whole network on vpn
   sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE

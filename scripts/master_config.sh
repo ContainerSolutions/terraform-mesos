@@ -59,15 +59,15 @@ sudo sh -c "echo 'warn' > /etc/marathon/conf/logging_level"
 
 ##### service stuff
 # stop mesos slave process, if running
-sudo stop mesos-slave
+sudo systemctl stop mesos-slave
 # disable automatic start of mesos slave
 sudo sh -c "echo manual > /etc/init/mesos-slave.override"
 
 # restart zookeeper
-sudo restart zookeeper
+sudo systemctl restart zookeeper
 
 # start mesos master
-sudo start mesos-master
+sudo systemctl start mesos-master
 
 # start marathon
-sudo start marathon
+sudo systemctl start marathon

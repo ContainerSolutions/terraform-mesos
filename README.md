@@ -37,7 +37,7 @@ Create a file `mesos.tf` containing something like this:
         slaves                      = "5"
         network                     = "10.20.30.0/24"
         domain                      = "example.com"
-        image                       = "ubuntu-1404-trusty-v20150316"
+        image                       = "ubuntu-1504-vivid-v20151120"
         mesos_version               = "0.22.1"
     }
 
@@ -45,22 +45,22 @@ See the `variables.tf` file for the available variables and their defaults
 
 #### Standard Mesos Ubuntu package
 
-If you set `image` to the standard Ubuntu 14.04 GCE image name, you get the standard Mesos version distributed with this operating system.
+If you set `image` to the standard Ubuntu 15.04 GCE image name, you get the standard Mesos version distributed with this operating system.
 
-    image = "ubuntu-1404-trusty-v20150316"
+    image = "ubuntu-1504-vivid-v20151120"
 
 #### Specific Mesos Ubuntu package version
 
 If you decide to use a specific version of Mesos, which does exist as an Ubuntu package, enter the version number to the optional `mesos_version` configuration option.
 
-    image = "ubuntu-1404-trusty-v20150316"
-    mesos_version = "0.22.1"
+    image = "ubuntu-1504-vivid-v20151120"
+    mesos_version = "0.25.0-0.2.70.ubuntu1504"
 
 #### Mesos built from a specific git commit
 
 You might want to try Mesos installed from a specific commit (e.g. "69d4cf654", or "master"). In order to do it, build a GCE virtual machine image (see [images/README.md](images/README.md)) with Mesos installed and use the `GCE_IMAGE_NAME` you give it as the `image` configuration option, e.g.:
     
-    image = "ubuntu-1404-trusty-mesos"
+    image = "ubuntu-1504-trusty-mesos"
 
 ### Get the Terraform module
 
@@ -97,7 +97,7 @@ terraform output -module mesos openvpn
 Download the `client.ovpn` file using e.g. `scp` and use it to establish VPN with the cluster. Once the VPN is up, you can access all machines within the cluster using their private IP addresses.
 
 ### Visit the web interfaces
-When the cluster is set up, check the Google Developers Console for the addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
+When the cluster is set up, check the Google Developers Console for the *internal* addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
 - Go to <http://ipaddress:5050> for the Mesos Console 
 - and <http://ipaddress:8080> for the Marathon Console
 

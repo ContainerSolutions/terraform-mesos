@@ -30,7 +30,7 @@ sudo apt-get -y update
 sudo locale-gen en_US.UTF-8
 
 # Try to install Mesos from a package
-sudo apt-get -y install mesos=$MESOS_VERSION
+sudo apt-get -y install mesos=$MESOS_VERSION*
 
 if [ $? -eq 0 ]
 	then

@@ -8,16 +8,14 @@ sudo stop zookeeper
 sudo stop mesos-master
 
 # disable services
-sudo sh -c "echo manual > /etc/init/zookeeper.override"
-sudo sh -c "echo manual > /etc/init/mesos-master.override"
+sudo systemctl disable zookeeper.service
+sudo systemctl disable mesos-master.service
 
 # set hostname
 HOSTNAME=`cat /etc/hostname`
 IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
 
 sudo sh -c "echo ${IP} > /etc/mesos-slave/hostname"
-# set ip address
-sudo sh -c "echo ${IP} > /etc/mesos-slave/ip"
 
 # set containerizers
 sudo sh -c "echo 'docker,mesos' > /etc/mesos-slave/containerizers"

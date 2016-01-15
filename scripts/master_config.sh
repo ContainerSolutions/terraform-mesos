@@ -33,8 +33,6 @@ HOSTNAME=`cat /etc/hostname`
 IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
 
 sudo sh -c "echo ${IP} > /etc/mesos-master/hostname"
-# host ip
-sudo sh -c "echo ${IP} > /etc/mesos-master/ip"
 # cluster name
 sudo sh -c "echo ${CLUSTERNAME} > /etc/mesos-master/cluster"
 # logging level
@@ -61,7 +59,7 @@ sudo sh -c "echo 'warn' > /etc/marathon/conf/logging_level"
 # stop mesos slave process, if running
 sudo systemctl stop mesos-slave
 # disable automatic start of mesos slave
-sudo sh -c "echo manual > /etc/init/mesos-slave.override"
+sudo systemctl disable mesos-slave
 
 # restart zookeeper
 sudo systemctl restart zookeeper

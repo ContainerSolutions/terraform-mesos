@@ -1,15 +1,16 @@
-#!/bin/bash
+#!/bin/bash -e
 HOSTNAME=`hostname`
 
 #only install if hostname ends with 0 (only do this for the first master in the cluster)
 if [ ${HOSTNAME: -1} -eq 0 ]
 then
   # install packages
-  sudo apt-get -y install openvpn easy-rsa
+  sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  sudo yum install -y openvpn easy-rsa 
   
   # use default openvpn configuration
   cd /etc/openvpn
-  gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee server.conf > /dev/null
+  sudo cp  /usr/share/doc/openvpn*/sample/sample-config-files/server.conf server.conf > /dev/null
   echo "dh2048.pem" | sudo tee dh2048.pem > /dev/null
   sudo sed -i 's/dh dh1024.pem/dh dh2048.pem/g' server.conf
   sudo sed -i "s/;user nobody/user nobody/g" server.conf
@@ -27,7 +28,7 @@ then
   sudo sysctl -w net.ipv4.ip_forward=1
 
   # configure keys
-  cd /etc/openvpn/easy-rsa
+  cd /etc/openvpn/easy-rsa/2.0
   source vars
   export KEY_COUNTRY="NL"
   export KEY_PROVINCE="NH"
@@ -49,7 +50,7 @@ then
   sudo -E ./pkitool --server $KEY_NAME
 
   # copy server certificates and key
-  sudo cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn
+  sudo cp keys/{server.crt,server.key,ca.crt} /etc/openvpn
 
   # enable systemd service
   sudo systemctl enable openvpn@server.service
@@ -65,7 +66,7 @@ then
 
   # template client config file 
   mkdir ~/openvpn && cd ~/openvpn
-  sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf client.ovpn
+  sudo cp /usr/share/doc/openvpn*/sample/sample-config-files/client.conf client.ovpn
 
   # update client configuration
   IP=$(curl http://ipecho.net/plain)
@@ -75,7 +76,7 @@ then
   sudo sed -i "s/ca ca.crt/;ca ca.crt/g" client.ovpn
   sudo sed -i "s/cert client.crt/;cert client.crt/g" client.ovpn
   sudo sed -i "s/key client.key/;key client.key/g" client.ovpn
-  echo -e "\n<ca>\n$(sudo cat /etc/openvpn/easy-rsa/keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<cert>\n$(sudo cat /etc/openvpn/easy-rsa/keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<key>\n$(sudo cat /etc/openvpn/easy-rsa/keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<ca>\n$(sudo cat keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<cert>\n$(sudo cat keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<key>\n$(sudo cat keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
 fi

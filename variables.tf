@@ -47,5 +47,9 @@ variable "masters" {
 variable "slaves" {
     default = "3"
 }
+# distribution redhat/ubuntu
+variable "distribution" {
+    default = "redhat"
+}
 
 

@@ -1,19 +1,14 @@
-#!/bin/bash
+#!/bin/bash -e
 
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
 CLUSTERNAME=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/clustername"`
 
-# stop services if running
-sudo stop zookeeper
-sudo stop mesos-master
-
 # disable services
-sudo systemctl disable zookeeper.service
-sudo systemctl disable mesos-master.service
+sudo systemctl disable zookeeper.service || true
+sudo systemctl disable mesos-master.service || true
 
 # set hostname
-HOSTNAME=`cat /etc/hostname`
-IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
+IP=`curl -L -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/ip`
 
 sudo sh -c "echo ${IP} > /etc/mesos-slave/hostname"
 
@@ -25,3 +20,4 @@ sudo sh -c "echo 'WARNING' > /etc/mesos-slave/logging_level"
 
 # start the slave process
 sudo systemctl start mesos-slave
+exit 0

@@ -17,6 +17,10 @@ resource "google_compute_instance" "mesos-slave" {
       mesosversion = "${var.mesos_version}"
     }
 
+    service_account {
+       scopes = ["userinfo-email", "compute-ro", "storage-ro"]
+    }
+
     network_interface {
       network = "${google_compute_network.mesos-net.name}"
       access_config {
@@ -33,10 +37,10 @@ resource "google_compute_instance" "mesos-slave" {
     # install mesos, haproxy and docker
     provisioner "remote-exec" {
       scripts = [
-        "${path.module}/scripts/common_install.sh",
-        "${path.module}/scripts/mesos_install.sh",
-        "${path.module}/scripts/slave_install.sh",
-        "${path.module}/scripts/haproxy_marathon_bridge_install.sh",
+        "${path.module}/scripts/common_install_${var.distribution}.sh",
+        "${path.module}/scripts/mesos_install_${var.distribution}.sh",
+        "${path.module}/scripts/slave_install_${var.distribution}.sh",
+        "${path.module}/scripts/haproxy_marathon_bridge_install_${var.distribution}.sh",
         "${path.module}/scripts/common_config.sh",
         "${path.module}/scripts/slave_config.sh"
       ]

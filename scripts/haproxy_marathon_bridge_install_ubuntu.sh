@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # get go
+sudp apt-get install -y git golang
 mkdir -p /tmp/go && cd /tmp/go
 curl -O https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
 tar -xf go1.4.2.linux-amd64.tar.gz && sudo mv go /opt/ && sudo mkdir /opt/gopkg

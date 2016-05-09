@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 echo "getting metadata"
 MASTERCOUNT=`curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/mastercount"`
@@ -19,7 +19,7 @@ done
 
 # set myid
 echo "setting myid"
-sudo sh -c "echo ${MYID} > /etc/zookeeper/conf/myid"
+sudo sh -c "echo ${MYID} > /var/lib/zookeeper/myid"
 
 ### MESOS stuff
 
@@ -29,8 +29,7 @@ QUORUM=$((${MASTERCOUNT}/2+1))
 # write the quorum to the file
 sudo sh -c "echo ${QUORUM} > /etc/mesos-master/quorum"
 #host name
-HOSTNAME=`cat /etc/hostname`
-IP=`host ${HOSTNAME}| grep ^${HOSTNAME}| awk '{print $4}'`
+IP=`curl -L -H "Metadata-Flavor: Google"   http://metadata/computeMetadata/v1/instance/network-interfaces/0/ip`
 
 sudo sh -c "echo ${IP} > /etc/mesos-master/hostname"
 # cluster name

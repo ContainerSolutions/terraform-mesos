@@ -37,8 +37,10 @@ Create a file `mesos.tf` containing something like this:
         slaves                      = "5"
         network                     = "10.20.30.0/24"
         domain                      = "example.com"
-        image                       = "ubuntu-1504-vivid-v20151120"
-        mesos_version               = "0.22.1"
+        mesos_version               = "0.28.0"
+        image                       = "rhel-7-v20160418"
+        distribution                = "redhat"
+        slave_machine_type          = "n1-standard-2"
     }
 
 See the `variables.tf` file for the available variables and their defaults

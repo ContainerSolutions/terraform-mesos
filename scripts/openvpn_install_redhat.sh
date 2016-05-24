@@ -26,6 +26,8 @@ then
   # enable ip forwarding
   echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward > /dev/null
   sudo sysctl -w net.ipv4.ip_forward=1
+  # adjust sysctl settings so they survive a reboot
+  sudo sed -i 's/net.ipv4.ip_forward=0/net.ipv4.ip_forward=1/' /etc/sysctl.d/11-gce-network-security.conf
 
   # configure keys
   cd /etc/openvpn/easy-rsa/2.0
@@ -59,7 +61,8 @@ then
   sudo systemctl start openvpn@server.service
 
   # enable whole network on vpn
-  sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+  sudo firewall-cmd --add-masquerade
+  sudo firewall-cmd --permanenet --add-masquerade
   
   # create client certificates
   sudo -E ./pkitool client1

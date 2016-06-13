@@ -62,7 +62,7 @@ If you decide to use a specific version of Mesos, which does exist as an Ubuntu 
 
 You might want to try Mesos installed from a specific commit (e.g. "69d4cf654", or "master"). In order to do it, build a GCE virtual machine image (see [images/README.md](images/README.md)) with Mesos installed and use the `GCE_IMAGE_NAME` you give it as the `image` configuration option, e.g.:
     
-    image = "ubuntu-1504-trusty-mesos"
+    image = "ubuntu-1404-trusty-mesos"
 
 ### Get the Terraform module
 

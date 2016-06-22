@@ -8,9 +8,11 @@
 * Follow the instructions on <https://www.terraform.io/intro/getting-started/install.html> to set up Terraform on your machine.
 
 ### Get your Google Cloud JSON Key
-- Visit https://console.developers.google.com
-- Navigate to APIs & Auth -> Credentials -> Service Account -> Generate new JSON key
-- The file will be downloaded to your machine
+- Go to the [Developers Console Credentials](https://console.developers.google.com/project/_/apis/credentials) page.
+- From the project drop-down, select `your google project`. If not exist, first create `your google project`.
+- On the Credentials page, select the Create credentials drop-down, then select Service account key.
+- From the Service account drop-down, select the existing `Compute Engine default service account`.
+- For Key type, select the JSON key option, then select Create. The `account_file` automatically downloads to your computer.
 
 ### Get Google Cloud SDK
 - Visit https://cloud.google.com/sdk/
@@ -27,7 +29,7 @@ Create a file `mesos.tf` containing something like this:
     module "mesos" {
         source                      = "github.com/ContainerSolutions/terraform-mesos"
         account_file                = "/path/to/your.key.json"
-        project                     = "your google project"
+        project                     = "your google project ID"
         region                      = "europe-west1"
         zone                        = "europe-west1-d"
         gce_ssh_user                = "user"
@@ -37,8 +39,8 @@ Create a file `mesos.tf` containing something like this:
         slaves                      = "5"
         network                     = "10.20.30.0/24"
         domain                      = "example.com"
-        mesos_version               = "0.28.0"
-        image                       = "rhel-7-v20160418"
+        mesos_version               = "0.28.2"
+        image                       = "rhel-7-v20160606"
         distribution                = "redhat"
         slave_machine_type          = "n1-standard-2"
     }
@@ -61,14 +63,16 @@ If you decide to use a specific version of Mesos, which does exist as an Ubuntu 
 #### Mesos built from a specific git commit
 
 You might want to try Mesos installed from a specific commit (e.g. "69d4cf654", or "master"). In order to do it, build a GCE virtual machine image (see [images/README.md](images/README.md)) with Mesos installed and use the `GCE_IMAGE_NAME` you give it as the `image` configuration option, e.g.:
-    
+
     image = "ubuntu-1404-trusty-mesos"
 
 ### Get the Terraform module
 
 Download the module
 
-```terraform get```
+```
+terraform get
+```
 
 ### Create Terraform plan
 
@@ -90,6 +94,13 @@ terraform apply my.plan
 
 Ports 80, 443 and 22 are open on all the machines within the cluster. Accessing other ports, e.g. Mesos GUI (port 5050) or Marathon GUI (port 8080) is only possible with VPN connection set up.
 
+Get the external IP address of the `module.mesos.google_compute_instance.mesos-master.0` VPN server
+```
+gcloud config set project <project> # your google project ID
+export EXTERNAL_IP_M0=`gcloud compute instances list --regexp .*master-0.* --format='value(networkInterfaces[].accessConfigs[].natIP:label=EXTERNAL_IP.list)' | awk -F"'" '$0=$2'`
+echo $EXTERNAL_IP_M0
+```
+
 Use the following command to get the location of `client.ovpn` file, that was created as part of the cluster provisioning.
 
 ```
@@ -99,10 +110,13 @@ terraform output -module mesos openvpn
 Download the `client.ovpn` file using e.g. `scp` and use it to establish VPN with the cluster. Once the VPN is up, you can access all machines within the cluster using their private IP addresses.
 
 ### Visit the web interfaces
-When the cluster is set up, check the Google Developers Console for the *internal* addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
-- Go to <http://ipaddress:5050> for the Mesos Console 
-- and <http://ipaddress:8080> for the Marathon Console
-
+When the cluster is set up, check the Google Developers Console for the *internal* addresses of the master nodes (or scroll back in the output of the apply step to retrieve them). Or use this script:
+```
+export INTERNAL_IP_M0=`gcloud compute instances list --regexp .*master-0.* --format='value(networkInterfaces[].networkIP.list())'`
+echo $INTERNAL_IP_M0
+open http://$INTERNAL_IP_M0:5050 # Mesos Console
+open http://$INTERNAL_IP_M0:8080 # Marathon Console
+```
 
 ### Destroy the cluster
 When you're done, clean up the cluster with
@@ -115,5 +129,3 @@ terraform destroy
 - Cannot reach the log files of the Mesos slave nodes from the web interface on the leading master
 
 The installation and configuration used in this module is based on this excellent howto: <https://www.digitalocean.com/community/tutorials/how-to-configure-a-production-ready-mesosphere-cluster-on-ubuntu-14-04>
-
-  

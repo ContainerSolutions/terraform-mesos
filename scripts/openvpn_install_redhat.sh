@@ -6,8 +6,8 @@ if [ ${HOSTNAME: -1} -eq 0 ]
 then
   # install packages
   sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  sudo yum install -y openvpn easy-rsa 
-  
+  sudo yum install -y openvpn easy-rsa
+
   # use default openvpn configuration
   cd /etc/openvpn
   sudo cp  /usr/share/doc/openvpn*/sample/sample-config-files/server.conf server.conf > /dev/null
@@ -62,24 +62,24 @@ then
 
   # enable whole network on vpn
   sudo firewall-cmd --add-masquerade
-  sudo firewall-cmd --permanenet --add-masquerade
-  
+  sudo firewall-cmd --permanent --add-masquerade
+
   # create client certificates
   sudo -E ./pkitool client1
 
-  # template client config file 
+  # template client config file
   mkdir ~/openvpn && cd ~/openvpn
   sudo cp /usr/share/doc/openvpn*/sample/sample-config-files/client.conf client.ovpn
 
   # update client configuration
-  IP=$(curl http://ipecho.net/plain)
+  IP=$(curl -fsSL -H "Metadata-Flavor: Google" http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
   sudo sed -i "s/remote my-server-1 1194/remote ${IP} 1194/g" client.ovpn
   sudo sed -i "s/;user nobody/user nobody/g" client.ovpn
   sudo sed -i "s/;group nogroup/group nogroup/g" client.ovpn
   sudo sed -i "s/ca ca.crt/;ca ca.crt/g" client.ovpn
   sudo sed -i "s/cert client.crt/;cert client.crt/g" client.ovpn
   sudo sed -i "s/key client.key/;key client.key/g" client.ovpn
-  echo -e "\n<ca>\n$(sudo cat keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<cert>\n$(sudo cat keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<key>\n$(sudo cat keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<ca>\n$(sudo cat /etc/openvpn/easy-rsa/2.0/keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<cert>\n$(sudo cat /etc/openvpn/easy-rsa/2.0/keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<key>\n$(sudo cat /etc/openvpn/easy-rsa/2.0/keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
 fi

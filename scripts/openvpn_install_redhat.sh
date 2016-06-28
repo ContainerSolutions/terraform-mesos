@@ -63,7 +63,6 @@ then
   # enable whole network on vpn
   sudo firewall-cmd --add-masquerade
   sudo firewall-cmd --permanenet --add-masquerade
-  
   # create client certificates
   sudo -E ./pkitool client1
 
@@ -79,7 +78,7 @@ then
   sudo sed -i "s/ca ca.crt/;ca ca.crt/g" client.ovpn
   sudo sed -i "s/cert client.crt/;cert client.crt/g" client.ovpn
   sudo sed -i "s/key client.key/;key client.key/g" client.ovpn
-  echo -e "\n<ca>\n$(sudo cat keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<cert>\n$(sudo cat keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<key>\n$(sudo cat keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<ca>\n$(sudo cat /etc/openvpn/easy-rsa/keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<cert>\n$(sudo cat /etc/openvpn/easy-rsa/keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<key>\n$(sudo cat /etc/openvpn/easy-rsa/keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
 fi

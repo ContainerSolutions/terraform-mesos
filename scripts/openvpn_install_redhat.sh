@@ -6,8 +6,8 @@ if [ ${HOSTNAME: -1} -eq 0 ]
 then
   # install packages
   sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  sudo yum install -y openvpn easy-rsa 
-  
+  sudo yum install -y openvpn easy-rsa
+
   # use default openvpn configuration
   cd /etc/openvpn
   sudo cp  /usr/share/doc/openvpn*/sample/sample-config-files/server.conf server.conf > /dev/null
@@ -62,12 +62,12 @@ then
 
   # enable whole network on vpn
   sudo firewall-cmd --add-masquerade
-  sudo firewall-cmd --permanenet --add-masquerade
-  
+  sudo firewall-cmd --permanent --add-masquerade
+
   # create client certificates
   sudo -E ./pkitool client1
 
-  # template client config file 
+  # template client config file
   mkdir ~/openvpn && cd ~/openvpn
   sudo cp /usr/share/doc/openvpn*/sample/sample-config-files/client.conf client.ovpn
 

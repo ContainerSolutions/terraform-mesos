@@ -6,8 +6,8 @@ if [ ${HOSTNAME: -1} -eq 0 ]
 then
   # install packages
   sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  sudo yum install -y openvpn easy-rsa 
-  
+  sudo yum install -y openvpn easy-rsa
+
   # use default openvpn configuration
   cd /etc/openvpn
   sudo cp  /usr/share/doc/openvpn*/sample/sample-config-files/server.conf server.conf > /dev/null
@@ -66,7 +66,7 @@ then
   # create client certificates
   sudo -E ./pkitool client1
 
-  # template client config file 
+  # template client config file
   mkdir ~/openvpn && cd ~/openvpn
   sudo cp /usr/share/doc/openvpn*/sample/sample-config-files/client.conf client.ovpn
 
@@ -78,7 +78,7 @@ then
   sudo sed -i "s/ca ca.crt/;ca ca.crt/g" client.ovpn
   sudo sed -i "s/cert client.crt/;cert client.crt/g" client.ovpn
   sudo sed -i "s/key client.key/;key client.key/g" client.ovpn
-  echo -e "\n<ca>\n$(sudo cat /etc/openvpn/easy-rsa/keys/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<cert>\n$(sudo cat /etc/openvpn/easy-rsa/keys/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
-  echo -e "\n<key>\n$(sudo cat /etc/openvpn/easy-rsa/keys/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<ca>\n$(sudo cat /etc/openvpn/easy-rsa/keys/2.0/ca.crt)\n</ca>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<cert>\n$(sudo cat /etc/openvpn/easy-rsa/keys/2.0/client1.crt)\n</cert>\n" | sudo tee -a client.ovpn > /dev/null
+  echo -e "\n<key>\n$(sudo cat /etc/openvpn/easy-rsa/keys/2.0/client1.key)\n</key>\n" | sudo tee -a client.ovpn > /dev/null
 fi

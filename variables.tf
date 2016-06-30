@@ -26,7 +26,7 @@ variable "slave_machine_type" {
 
 ## network stuff
 # the address of the subnet in CIDR
-variable "network" {
+variable "subnetwork" {
     default = "10.20.30.0/24"
 }
 # domain name used by haproxy
@@ -51,5 +51,3 @@ variable "slaves" {
 variable "distribution" {
     default = "redhat"
 }
-
-

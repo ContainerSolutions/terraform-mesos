@@ -35,7 +35,7 @@ Create a file `mesos.tf` containing something like this:
         name                        = "mymesoscluster"
         masters                     = "3"
         slaves                      = "5"
-        network                     = "10.20.30.0/24"
+        subnetwork                  = "10.20.30.0/24"
         domain                      = "example.com"
         mesos_version               = "0.28.0"
         image                       = "rhel-7-v20160418"
@@ -61,7 +61,7 @@ If you decide to use a specific version of Mesos, which does exist as an Ubuntu 
 #### Mesos built from a specific git commit
 
 You might want to try Mesos installed from a specific commit (e.g. "69d4cf654", or "master"). In order to do it, build a GCE virtual machine image (see [images/README.md](images/README.md)) with Mesos installed and use the `GCE_IMAGE_NAME` you give it as the `image` configuration option, e.g.:
-    
+
     image = "ubuntu-1404-trusty-mesos"
 
 ### Get the Terraform module
@@ -100,7 +100,7 @@ Download the `client.ovpn` file using e.g. `scp` and use it to establish VPN wit
 
 ### Visit the web interfaces
 When the cluster is set up, check the Google Developers Console for the *internal* addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
-- Go to <http://ipaddress:5050> for the Mesos Console 
+- Go to <http://ipaddress:5050> for the Mesos Console
 - and <http://ipaddress:8080> for the Marathon Console
 
 
@@ -115,5 +115,3 @@ terraform destroy
 - Cannot reach the log files of the Mesos slave nodes from the web interface on the leading master
 
 The installation and configuration used in this module is based on this excellent howto: <https://www.digitalocean.com/community/tutorials/how-to-configure-a-production-ready-mesosphere-cluster-on-ubuntu-14-04>
-
-  

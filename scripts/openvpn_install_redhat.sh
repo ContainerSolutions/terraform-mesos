@@ -6,8 +6,8 @@ if [ ${HOSTNAME: -1} -eq 0 ]
 then
   # install packages
   sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  sudo yum install -y openvpn easy-rsa 
-  
+  sudo yum install -y openvpn easy-rsa
+
   # use default openvpn configuration
   cd /etc/openvpn
   sudo cp  /usr/share/doc/openvpn*/sample/sample-config-files/server.conf server.conf > /dev/null
@@ -15,8 +15,8 @@ then
   sudo sed -i 's/dh dh1024.pem/dh dh2048.pem/g' server.conf
   sudo sed -i "s/;user nobody/user nobody/g" server.conf
   sudo sed -i "s/;group nogroup/group nogroup/g" server.conf
-  NETWORK=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/network" | cut -f1 -d"/")
-  echo "push \"route ${NETWORK} 255.255.255.0\"" | sudo tee -a server.conf > /dev/null
+  SUBNETWORK=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/subnetwork" | cut -f1 -d"/")
+  echo "push \"route ${SUBNETWORK} 255.255.255.0\"" | sudo tee -a server.conf > /dev/null
   echo "tun-mtu 1400" | sudo tee -a server.conf > /dev/null
   echo "mssfix 1360" | sudo tee -a server.conf > /dev/null
   sudo sed -i "s/;duplicate-cn/duplicate-cn/g" server.conf
@@ -63,11 +63,11 @@ then
   # enable whole network on vpn
   sudo firewall-cmd --add-masquerade
   sudo firewall-cmd --permanenet --add-masquerade
-  
+
   # create client certificates
   sudo -E ./pkitool client1
 
-  # template client config file 
+  # template client config file
   mkdir ~/openvpn && cd ~/openvpn
   sudo cp /usr/share/doc/openvpn*/sample/sample-config-files/client.conf client.ovpn
 

@@ -1,6 +1,6 @@
 resource "google_compute_firewall" "mesos-internal" {
     name = "${var.name}-mesos-internal"
-    network = "${google_compute_network.mesos-net.name}"
+    network = "${google_compute_network.mesos-global-net.name}"
 
     allow {
         protocol = "tcp"
@@ -14,13 +14,13 @@ resource "google_compute_firewall" "mesos-internal" {
         protocol = "icmp"
     }
 
-    source_ranges = ["${google_compute_network.mesos-net.ipv4_range}"]
+    source_ranges = ["${google_compute_subnetwork.mesos-net.ip_cidr_range}"]
 
 }
 
 resource "google_compute_firewall" "mesos-http" {
-    name = "${var.name}-mesos-http"
-    network = "${google_compute_network.mesos-net.name}"
+    name = "${var.name}-${var.region}-mesos-http"
+    network = "${google_compute_network.mesos-global-net.name}"
 
     allow {
         protocol = "tcp"
@@ -32,8 +32,8 @@ resource "google_compute_firewall" "mesos-http" {
 }
 
 resource "google_compute_firewall" "mesos-https" {
-    name = "${var.name}-mesos-https"
-    network = "${google_compute_network.mesos-net.name}"
+    name = "${var.name}-${var.region}-mesos-https"
+    network = "${google_compute_network.mesos-global-net.name}"
 
     allow {
         protocol = "tcp"
@@ -45,8 +45,8 @@ resource "google_compute_firewall" "mesos-https" {
 }
 
 resource "google_compute_firewall" "mesos-ssh" {
-    name = "${var.name}-mesos-ssh"
-    network = "${google_compute_network.mesos-net.name}"
+    name = "${var.name}-${var.region}-mesos-ssh"
+    network = "${google_compute_network.mesos-global-net.name}"
 
     allow {
         protocol = "tcp"
@@ -58,8 +58,8 @@ resource "google_compute_firewall" "mesos-ssh" {
 }
 
 resource "google_compute_firewall" "vpn" {
-    name = "${var.name}-vpn"
-    network = "${google_compute_network.mesos-net.name}"
+    name = "${var.name}-${var.region}-vpn"
+    network = "${google_compute_network.mesos-global-net.name}"
 
     allow {
         protocol = "udp"

@@ -24,6 +24,12 @@ variable "slave_machine_type" {
     default = "n1-standard-4"
 }
 
+variable "slave_resources" {
+  type = "string"
+  default = ""
+  description = "Overrule default resources of the Mesos slaves depending on slave_machine_type, eg cpus(*):0.90; disk(*):7128. TF doesn't update slave resources."
+}
+
 ## network stuff
 # the address of the subnet in CIDR
 variable "network" {
@@ -51,5 +57,3 @@ variable "slaves" {
 variable "distribution" {
     default = "redhat"
 }
-
-

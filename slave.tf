@@ -9,12 +9,13 @@ resource "google_compute_instance" "mesos-slave" {
       image = "${var.image}"
       type = "pd-ssd"
     }
-    
+
     metadata {
       mastercount = "${var.masters}"
       clustername = "${var.name}"
       domain = "${var.domain}"
       mesosversion = "${var.mesos_version}"
+      slave_resources = "${var.slave_resources}"
     }
 
     service_account {

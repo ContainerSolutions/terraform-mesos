@@ -41,6 +41,7 @@ Create a file `mesos.tf` containing something like this:
         image                       = "rhel-7-v20160418"
         distribution                = "redhat"
         slave_machine_type          = "n1-standard-2"
+      # slave_resources             = "cpus(*):0.90; disk(*):7128"
     }
 
 See the `variables.tf` file for the available variables and their defaults

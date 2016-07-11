@@ -72,7 +72,7 @@ then
   sudo cp /usr/share/doc/openvpn*/sample/sample-config-files/client.conf client.ovpn
 
   # update client configuration
-  IP=$(curl http://ipecho.net/plain)
+  IP=$(curl -fsSL -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
   sudo sed -i "s/remote my-server-1 1194/remote ${IP} 1194/g" client.ovpn
   sudo sed -i "s/;user nobody/user nobody/g" client.ovpn
   sudo sed -i "s/;group nogroup/group nogroup/g" client.ovpn

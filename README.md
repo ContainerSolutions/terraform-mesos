@@ -37,7 +37,7 @@ Create a file `mesos.tf` containing something like this:
         slaves                      = "5"
         network                     = "10.20.30.0/24"
         domain                      = "example.com"
-        mesos_version               = "0.28.0"
+        mesos_version               = "0.28.2"
         image                       = "rhel-7-v20160418"
         distribution                = "redhat"
         slave_machine_type          = "n1-standard-2"

@@ -1,12 +1,14 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # Setup
-sudo dpkg -s mesos
+set +e
+sudo dpkg-query -l mesos
 if [ $? -eq 0 ]
 	then
 	echo "Mesos is already installed"
 	exit $?
 fi
+set -e
 
 if [ -z "$MESOS_VERSION" ]
 	then

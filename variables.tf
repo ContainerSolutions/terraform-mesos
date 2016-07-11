@@ -32,7 +32,7 @@ variable "slave_resources" {
 
 ## network stuff
 # the address of the subnet in CIDR
-variable "network" {
+variable "subnetwork" {
     default = "10.20.30.0/24"
 }
 # domain name used by haproxy

@@ -16,7 +16,7 @@ resource "google_compute_instance" "mesos-master" {
       clustername = "${var.name}"
       myid = "${count.index}"
       domain = "${var.domain}"
-      network = "${var.network}"
+      subnetwork = "${var.subnetwork}"
       mesosversion = "${var.mesos_version}"
     }
 
@@ -26,7 +26,7 @@ resource "google_compute_instance" "mesos-master" {
 
     # network interface
     network_interface {
-      network = "${google_compute_network.mesos-net.name}"
+      subnetwork = "${google_compute_subnetwork.mesos-net.name}"
       access_config {
         // ephemeral address
       }

@@ -35,7 +35,7 @@ Create a file `mesos.tf` containing something like this:
         name                        = "mymesoscluster"
         masters                     = "3"
         slaves                      = "5"
-        network                     = "10.20.30.0/24"
+        subnetwork                  = "10.20.30.0/24"
         domain                      = "example.com"
         mesos_version               = "0.28.2"
         image                       = "rhel-7-v20160418"

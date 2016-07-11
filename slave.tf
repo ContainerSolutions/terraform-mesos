@@ -23,7 +23,7 @@ resource "google_compute_instance" "mesos-slave" {
     }
 
     network_interface {
-      network = "${google_compute_network.mesos-net.name}"
+      subnetwork = "${google_compute_subnetwork.mesos-net.name}"
       access_config {
         //Ephemeral IP
       }

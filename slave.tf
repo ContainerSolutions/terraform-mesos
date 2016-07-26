@@ -30,10 +30,11 @@ resource "google_compute_instance" "mesos-slave" {
     }
 
     # define default connection for remote provisioners
-    connection {
-      user = "${var.gce_ssh_user}"
-      key_file = "${var.gce_ssh_private_key_file}"
-    }
+  connection {
+    type = "ssh"
+    user = "${var.gce_ssh_user}"
+    private_key = "${file(var.gce_ssh_private_key_file)}"
+  }
 
     # install mesos, haproxy and docker
     provisioner "remote-exec" {

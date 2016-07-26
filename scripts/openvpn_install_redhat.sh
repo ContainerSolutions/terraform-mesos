@@ -27,7 +27,7 @@ then
   echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward > /dev/null
   sudo sysctl -w net.ipv4.ip_forward=1
   # adjust sysctl settings so they survive a reboot
-  sudo sed -i 's/net.ipv4.ip_forward=0/net.ipv4.ip_forward=1/' /etc/sysctl.d/11-gce-network-security.conf
+  sudo echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 
   # configure keys
   cd /etc/openvpn/easy-rsa/2.0

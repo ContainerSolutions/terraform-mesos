@@ -6,7 +6,7 @@ if [ ${HOSTNAME: -1} -eq 0 ]
 then
   # install packages
   sudo apt-get -y install openvpn easy-rsa
-  
+
   # use default openvpn configuration
   cd /etc/openvpn
   gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee server.conf > /dev/null
@@ -14,8 +14,8 @@ then
   sudo sed -i 's/dh dh1024.pem/dh dh2048.pem/g' server.conf
   sudo sed -i "s/;user nobody/user nobody/g" server.conf
   sudo sed -i "s/;group nogroup/group nogroup/g" server.conf
-  NETWORK=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/network" | cut -f1 -d"/")
-  echo "push \"route ${NETWORK} 255.255.255.0\"" | sudo tee -a server.conf > /dev/null
+  SUBNETWORK=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/subnetwork" | cut -f1 -d"/")
+  echo "push \"route ${SUBNETWORK} 255.255.255.0\"" | sudo tee -a server.conf > /dev/null
   echo "tun-mtu 1400" | sudo tee -a server.conf > /dev/null
   echo "mssfix 1360" | sudo tee -a server.conf > /dev/null
   sudo sed -i "s/;duplicate-cn/duplicate-cn/g" server.conf
@@ -59,16 +59,16 @@ then
 
   # enable whole network on vpn
   sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-  
+
   # create client certificates
   sudo -E ./pkitool client1
 
-  # template client config file 
+  # template client config file
   mkdir ~/openvpn && cd ~/openvpn
   sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf client.ovpn
 
   # update client configuration
-  IP=$(curl http://ipecho.net/plain)
+  IP=$(curl -fsSL -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
   sudo sed -i "s/remote my-server-1 1194/remote ${IP} 1194/g" client.ovpn
   sudo sed -i "s/;user nobody/user nobody/g" client.ovpn
   sudo sed -i "s/;group nogroup/group nogroup/g" client.ovpn

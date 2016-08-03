@@ -17,7 +17,7 @@ if [ -z "$MESOS_VERSION" ]
 fi
 
 # Add the repository
-sudo rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+sudo rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-3.noarch.rpm
 
 # Generate locale
 sudo localedef -c -i en_US -f UTF-8 en_US.UTF-8

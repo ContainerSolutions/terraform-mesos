@@ -29,7 +29,7 @@ Create a file `mesos.tf` containing something like this:
     module "mesos" {
         source                      = "github.com/ContainerSolutions/terraform-mesos"
         account_file                = "/path/to/your.key.json"
-        project                     = "your google project"
+        project                     = "your google project ID"
         region                      = "europe-west1"
         zone                        = "europe-west1-d"
         gce_ssh_user                = "user"
@@ -37,12 +37,13 @@ Create a file `mesos.tf` containing something like this:
         name                        = "mymesoscluster"
         masters                     = "3"
         slaves                      = "5"
-        network                     = "10.20.30.0/24"
+        subnetwork                  = "10.20.30.0/24"
         domain                      = "example.com"
-        mesos_version               = "0.28.0"
+        mesos_version               = "0.28.2"
         image                       = "rhel-7-v20160418"
         distribution                = "redhat"
         slave_machine_type          = "n1-standard-2"
+      # slave_resources             = "cpus(*):0.90; disk(*):7128"
     }
 
 See the `variables.tf` file for the available variables and their defaults

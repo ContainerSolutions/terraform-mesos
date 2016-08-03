@@ -24,9 +24,15 @@ variable "slave_machine_type" {
     default = "n1-standard-4"
 }
 
+variable "slave_resources" {
+  type = "string"
+  default = ""
+  description = "Overrule default resources of the Mesos slaves depending on slave_machine_type, eg cpus(*):0.90; disk(*):7128. TF doesn't update slave resources."
+}
+
 ## network stuff
 # the address of the subnet in CIDR
-variable "network" {
+variable "subnetwork" {
     default = "10.20.30.0/24"
 }
 # domain name used by haproxy
@@ -35,7 +41,7 @@ variable "domain" {}
 ## mesos stuff
 # mesos version
 variable "mesos_version" {
-	default = "0.26"
+	default = "0.28.2"
 }
 # the name of the cluster
 variable "name" {}
@@ -51,5 +57,3 @@ variable "slaves" {
 variable "distribution" {
     default = "redhat"
 }
-
-

@@ -4,13 +4,15 @@
 
 ### Install Terraform
 
-* This module requires Terraform 0.6.2 or greater
+* This module requires Terraform 0.6.16 or greater
 * Follow the instructions on <https://www.terraform.io/intro/getting-started/install.html> to set up Terraform on your machine.
 
-### Get your Google Cloud JSON Key
-- Visit https://console.developers.google.com
-- Navigate to APIs & Auth -> Credentials -> Service Account -> Generate new JSON key
-- The file will be downloaded to your machine
+### Get your Google Cloud JSON account_file
+Authenticating with Google Cloud services requires a JSON file which we call the account file. This file is downloaded directly from the Google Developers Console. Follow these steps:
+- Log into the [Google Developers Console](https://console.developers.google.com/) and select `your google project`.
+- The API Manager view should be selected, click on "Credentials" on the left, then "Create credentials", and finally "Service account key".
+- Select "Compute Engine default service account" in the "Service account" dropdown, and select "JSON" as the key type.
+- Clicking "Create" will download your account_file.
 
 ### Get Google Cloud SDK
 - Visit https://cloud.google.com/sdk/
@@ -69,7 +71,9 @@ You might want to try Mesos installed from a specific commit (e.g. "69d4cf654", 
 
 Download the module
 
-```terraform get```
+```
+terraform get -update
+```
 
 ### Create Terraform plan
 
@@ -91,19 +95,24 @@ terraform apply my.plan
 
 Ports 80, 443 and 22 are open on all the machines within the cluster. Accessing other ports, e.g. Mesos GUI (port 5050) or Marathon GUI (port 8080) is only possible with VPN connection set up.
 
-Use the following command to get the location of `client.ovpn` file, that was created as part of the cluster provisioning.
+Use the following commands to download `client.ovpn` file. Then use it to establish VPN with the cluster.
 
 ```
-terraform output -module mesos openvpn
+OVPNFILE=`terraform output -module mesos openvpn`
+scp -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $OVPNFILE .
+sudo openvpn --config client.ovpn
 ```
-
-Download the `client.ovpn` file using e.g. `scp` and use it to establish VPN with the cluster. Once the VPN is up, you can access all machines within the cluster using their private IP addresses.
 
 ### Visit the web interfaces
-When the cluster is set up, check the Google Developers Console for the *internal* addresses of the master nodes (or scroll back in the output of the apply step to retrieve them).
-- Go to <http://ipaddress:5050> for the Mesos Console
-- and <http://ipaddress:8080> for the Marathon Console
+Once the VPN is up, you can access all machines within the cluster using their private IP addresses. Open a second tab to execute the following commands
 
+```
+export INTERNAL_IP_M0=`gcloud compute instances list --regexp .*master-0.* --format='value(networkInterfaces[].networkIP.list())'`
+open http://$INTERNAL_IP_M0:5050 # Mesos Console
+open http://$INTERNAL_IP_M0:8080 # Marathon Console
+mesos config master zk://$INTERNAL_IP_M0:2181/mesos # for those who have the local mesos client installed
+curl -s $INTERNAL_IP_M0:5050/master/slaves | python -mjson.tool | grep -e pid -e disk -e cpus
+```
 
 ### Destroy the cluster
 When you're done, clean up the cluster with

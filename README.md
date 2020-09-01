@@ -1,5 +1,7 @@
 # Container Solutions Terraform Mesos
 
+*Please note that this project hasn't been updated since 2016 and hence we've decided to archive it. The code is likely obsolete, as it uses old versions of Terraform, Google Cloud SDK and Mesos.*
+
 ## How to set up a Mesos cluster on the Google Cloud using Terraform
 
 ### Install Terraform
